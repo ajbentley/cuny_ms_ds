@@ -1,0 +1,107 @@
+Breakfast Cereal,Brand,size,Calories,Total Fat ,Saturated Fat ,Carbs ,Fiber ,Sugar ,Protein ,transfat,hfcs
+Rice Chex ,General Mills,1,100,0.5,0,23,0,2,2,NO,NO
+Rice Krispies ,Kellogg's,1.25,120,0,0,29,0,3,2,NO,YES
+Rice Krispies Treats Cereal ,Kellogg's,0.75,120,1.5,0,26,0,9,1,YES,YES
+Frosted Krispies ,Kellogg's,0.75,110,0,0,27,0,12,1,NO,YES
+Trix ,General Mills,1,120,1.5,0,28,1,13,1,NO,YES
+Lucky Charms ,General Mills,0.75,110,1,0,22,1,11,2,NO,NO
+Corn Chex ,General Mills,1,120,0.5,0,26,1,3,2,NO,NO
+Reese's Puffs ,General Mills,0.75,120,3,0.5,22,1,12,2,NO,NO
+Golden Grahams ,General Mills,0.75,120,1,0,26,1,11,2,NO,NO
+Franken Berry ,General Mills,1,130,1,0,29,1,14,1,NO,NO
+Count Chocula ,General Mills,0.75,110,1,0,23,1,12,1,NO,NO
+Cookie Crisp ,General Mills,0.75,100,1,0,22,1,11,1,NO,NO
+Cocoa Puffs ,General Mills,0.75,110,1.5,0,23,1,12,1,NO,NO
+Cinnamon Toast Crunch ,General Mills,0.75,130,3,0.5,25,1,10,1,NO,NO
+Froot Loops ,Kellogg's,1,120,1,0.5,26,1,13,1,YES,YES
+Apple Jacks ,Kellogg's,1,120,0.5,0,28,1,15,1,NO,YES
+Frosted Flakes ,Kellogg's,0.75,110,0,0,27,1,11,1,NO,YES
+Honey Smacks ,Kellogg's,0.75,100,0.5,0,24,1,15,2,YES,NO
+Mini-Swirlz Cinnamon Bun ,Kellogg's,1,120,2,0,25,1,12,2,YES,NO
+Product 19 ,Kellogg's,1,100,0,0,25,1,4,2,NO,YES
+Special K Red Berries ,Kellogg's,1,110,0,0,25,1,10,3,NO,YES
+Oreo O's ,Post,0.11,110,2,0.5,22,1,13,1,YES,YES
+Waffle Crisp ,Post,0.13,120,2.5,0,25,1,12,2,YES,NO
+Yogurt Burst Cheerios Vanilla ,General Mills,0.75,120,1.5,0.5,24,2,9,2,NO,NO
+Honey Nut Cheerios ,General Mills,0.75,110,1.5,0,22,2,9,3,NO,NO
+Eggo Cereal Maple Syrup ,Kellogg's,1,120,1.5,0.5,22,2,13,2,YES,YES
+Honey Bunches Of Oats ,Post,0.13,120,1.5,0,25,2,6,2,NO,NO
+Honey-Comb ,Post,0.14,120,1,0,27,2,10,2,NO,NO
+Life ,Quaker,0.75,120,1.5,0,25,2,6,3,NO,NO
+Wheaties ,General Mills,0.75,100,0.5,0,22,3,4,3,NO,NO
+Cheerios ,General Mills,1,100,2,0,20,3,1,3,NO,NO
+Multi Grain Cheerios ,General Mills,1,110,1,0,23,3,6,2,NO,NO
+Total ,General Mills,0.75,100,0.5,0,23,3,5,2,NO,NO
+Kix ,General Mills,1.25,110,1,0,25,3,3,2,NO,NO
+Basic 4 ,General Mills,1,200,3,0.5,43,3,13,4,YES,NO
+Cocoa Pebbles ,Post,0.13,110,1.5,1,26,3,11,1,YES,NO
+Fruity Pebbles ,Post,0.13,110,1,1,26,3,11,1,YES,NO
+Oatmeal Crisp Crunchy Almond ,General Mills,1,220,5,0.5,46,4,16,6,NO,YES
+Raisin Bran Crunch ,Kellogg's,1,190,1,0,45,4,20,3,NO,YES
+Banana Nut Crunch ,Post,0.25,240,6,0.5,44,4,12,5,NO,NO
+Wheat Chex ,General Mills,0.75,160,1,0,38,5,5,5,NO,NO
+Smart Start Healthy Heart ,Kellogg's,1.25,230,3,0.5,46,5,17,7,NO,YES
+Frosted Mini-Wheats Bite Size ,Kellogg's,0.23,200,1,0,48,6,12,6,NO,YES
+Shredded Wheat ,Post,0.2,200,1,0,37,6,0,5,NO,NO
+Grape Nuts ,Post,0.25,200,1,0,48,7,4,6,NO,NO
+GOLEAN Cereal ,Kashi,1,140,1,0,30,10,6,13,NO,NO
+All-Bran ,Kellogg's,0.5,80,1,0,23,10,6,4,NO,YES
+Fiber One ,General Mills,0.5,60,1,0,25,14,0,2,NO,NO
+Corn Flakes ,Kellogg's,1,100,0,0,24,0,2,2,NO,YES
+Corn Pops ,Kellogg's,1,120,0,0,28,0,14,1,YES,NO
+Crispix ,Kellogg's,1,110,0,0,25,0,3,2,NO,NO
+Smorz ,Kellogg's,1,120,2,0.5,25,0,13,1,YES,YES
+Special K ,Kellogg's,1,120,0.5,0,22,0,4,7,NO,YES
+,,,,,,,,,,,
+,,,,,,,,,,,
+,,,,,,,,,,,
+,,,,,,,,,,,
+,,,,,,,,,,,
+,,,,,,,,,,,
+,,,,,,,,,,,
+,,,,,,,,,,,
+,,,,,,,,,,,
+,,,,,,,,,,,
+,,,,,,,,,,,
+,,,,,,,,,,,
+,,,,,,,,,,,
+,,,,,,,,,,,
+,,,,,,,,,,,
+,,,,,,,,,,,
+,,,,,,,,,,,
+,,,,,,,,,,,
+,,,,,,,,,,,
+,,,,,,,,,,,
+,,,,,,,,,,,
+,,,,,,,,,,,
+,,,,,,,,,,,
+,,,,,,,,,,,
+,,,,,,,,,,,
+,,,,,,,,,,,
+,,,,,,,,,,,
+,,,,,,,,,,,
+,,,,,,,,,,,
+,,,,,,,,,,,
+,,,,,,,,,,,
+,,,,,,,,,,,
+,,,,,,,,,,,
+,,,,,,,,,,,
+,,,,,,,,,,,
+,,,,,,,,,,,
+,,,,,,,,,,,
+,,,,,,,,,,,
+,,,,,,,,,,,
+,,,,,,,,,,,
+,,,,,,,,,,,
+,,,,,,,,,,,
+,,,,,,,,,,,
+,,,,,,,,,,,
+,,,,,,,,,,,
+,,,,,,,,,,,
+,,,,,,,,,,,
+,,,,,,,,,,,
+,,,,,,,,,,,
+,,,,,,,,,,,
+,,,,,,,,,,,
+,,,,,,,,,,,
+,,,,,,,,,,,
