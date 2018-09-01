@@ -1,0 +1,76 @@
+---
+title: "607 Homework Week 1"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+#### Read in data
+
+```{r read in data}
+
+mydata <- read.csv("https://raw.githubusercontent.com/ajbentley/cuny_ms_ds/master/agaricus-lepiota..csv", header = FALSE)
+
+```
+
+
+
+#### Change titles of original dataframe
+
+```{r titles}
+
+colnames(mydata) <- c('poisonous','cap_shape','cap_surface','cap_color','bruises','odor','gill_attachment','gill_spacing','gill_size','gill_color','stalk_shape','stalk_root','stalk_surface_above_ring','stalk_surface_below_ring','stalk_color_above_ring','stalk_color_below_ring','veil_type','veil_color','ring_number','ring_type','spore_print_color','population','habitat')
+
+```
+
+#### Make new dataframe isolating variables on color
+
+```{r new dataframe}
+
+df <- mydata[,grep("color",colnames(mydata))] 
+
+head(df)
+
+```
+
+#### Change color codes to color names in each variable
+```{r change color codes to colors, MESSAGES=FALSE, WARNINGS=FALSE, ECHO=FALSE}
+
+require(plyr)
+
+df$cap_color <- revalue(df$cap_color, c('w' = 'white', 'k' = 'black', 'n' = 'brown', 'b' = 'buff', 'h' = 'chocolate', 'c' = 'cinnamon', 'g' = 'gray', 'r' = 'green', 'o' = 'orange', 'p' = 'pink', 'u' = 'purple', 'e' = 'red', 'y' = 'yellow'))
+
+df$gill_color <- revalue(df$gill_color, c('w' = 'white', 'k' = 'black', 'n' = 'brown', 'b' = 'buff', 'h' = 'chocolate', 'c' = 'cinnamon', 'g' = 'gray', 'r' = 'green', 'o' = 'orange', 'p' = 'pink', 'u' = 'purple', 'e' = 'red', 'y' = 'yellow'))
+
+df$stalk_color_above_ring <- revalue(df$stalk_color_above_ring, c('w' = 'white', 'k' = 'black', 'n' = 'brown', 'b' = 'buff', 'h' = 'chocolate', 'c' = 'cinnamon', 'g' = 'gray', 'r' = 'green', 'o' = 'orange', 'p' = 'pink', 'u' = 'purple', 'e' = 'red', 'y' = 'yellow'))
+
+df$stalk_color_below_ring <- revalue(df$stalk_color_below_ring, c('w' = 'white', 'k' = 'black', 'n' = 'brown', 'b' = 'buff', 'h' = 'chocolate', 'c' = 'cinnamon', 'g' = 'gray', 'r' = 'green', 'o' = 'orange', 'p' = 'pink', 'u' = 'purple', 'e' = 'red', 'y' = 'yellow'))
+
+df$veil_color <- revalue(df$veil_color, c('w' = 'white', 'k' = 'black', 'n' = 'brown', 'b' = 'buff', 'h' = 'chocolate', 'c' = 'cinnamon', 'g' = 'gray', 'r' = 'green', 'o' = 'orange', 'p' = 'pink', 'u' = 'purple', 'e' = 'red', 'y' = 'yellow'))
+
+df$spore_print_color <- revalue(df$spore_print_color, c('w' = 'white', 'k' = 'black', 'n' = 'brown', 'b' = 'buff', 'h' = 'chocolate', 'c' = 'cinnamon', 'g' = 'gray', 'r' = 'green', 'o' = 'orange', 'p' = 'pink', 'u' = 'purple', 'e' = 'red', 'y' = 'yellow'))
+
+```
+
+#### Add poison column to the new dataframe
+
+```{r add poison}
+
+dfp <- cbind(mydata[1],df)
+
+```
+
+#### Change poison codes to edible / poisonous
+
+```{r change p/e to poison/edible}
+
+
+dfp$poisonous <- revalue(dfp$poisonous, c('e' = 'edible', 'p' = 'poisonous'))
+
+head(dfp)
+
+```
+
+*Final note: While coding I check heads/tails/etc obsessively but I don't include them in my submitted code unless requested.*
