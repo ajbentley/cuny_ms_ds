@@ -1,0 +1,20 @@
+---
+title: "Untitled"
+author: "AJ Bentley"
+date: "September 5, 2018"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+#### Load movie ratings csv into R data frame
+
+```{r load data} 
+
+mydata <- read.csv("https://raw.githubusercontent.com/ajbentley/cuny_ms_ds/master/607/movie_ratings.csv", header = TRUE)
+
+head(mydata)
+```
+
