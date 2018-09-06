@@ -1,5 +1,5 @@
 ---
-title: "Untitled"
+title: "CUNY MSDS 607 Lab Week 2"
 author: "AJ Bentley"
 date: "September 5, 2018"
 output: html_document
@@ -7,14 +7,132 @@ output: html_document
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+library(dplyr)
+require(ggplot2)
+require(reshape2)
+
 ```
 
 #### Load movie ratings csv into R data frame
 
 ```{r load data} 
 
-mydata <- read.csv("https://raw.githubusercontent.com/ajbentley/cuny_ms_ds/master/607/movie_ratings.csv", header = TRUE)
+movie_ratings <- read.csv("https://raw.githubusercontent.com/ajbentley/cuny_ms_ds/master/607/movie_ratings.csv", header = TRUE)
 
-head(mydata)
+# changing Respondant Name colum to character instead of factor
+movie_ratings$Respondant.Name <- as.character((movie_ratings$Respondant.Name))
+head(movie_ratings)
+```
+
+#### Check df dimensions and summary
+
+```{r movie_ratings dimension}
+
+dim(movie_ratings)
+```
+
+```{r movie_ratings summary}
+summary(movie_ratings)
+```
+
+#### Make table of ratings wih average row
+
+```{r make table of only numeric columns}
+
+nums <- unlist(lapply(movie_ratings, is.numeric))
+mr_ratings_only <- movie_ratings[ , nums]
+
+head(mr_ratings_only)
+```
+
+```{r get average of each movie}
+avg_rtgs <- apply(mr_ratings_only,2,mean)
+avg_rtgs <- round(avg_rtgs, digits=2)
+avg_rtgs
+```
+```{r add average row to mr_ratings_only}
+mr_ratings_only <- rbind(mr_ratings_only, avg_rtgs)
+mr_ratings_only <- round(mr_ratings_only,digits=2)
+tail(mr_ratings_only)
+```
+
+```{r create new df with average ratings row}
+movie_ratings[nrow(movie_ratings)+1,] <- NA
+movie_ratings <- cbind(movie_ratings, mr_ratings_only)
+movie_ratings <-  movie_ratings[,-c(3:8)] 
+tail(movie_ratings)
+```
+
+
+```{r add "Average" as Respondant Name for Avg Row}
+
+movie_ratings[15, 2] = "Average Rating"
+tail(movie_ratings)
+```
+
+
+#### Create new DF that compares average movie ratings for men versus women
+```{r see ratings by gender}
+
+# df with only males
+males <- movie_ratings[ which(movie_ratings$Gender=='Male'),]
+
+# df with only males and only numeric columns
+nums <- unlist(lapply(males, is.numeric))
+male_rtgs_only <- males[ , nums]
+
+# get average male ratings averaged to 2 digits and give it a nicer name
+avg_male_rtgs <- apply(male_rtgs_only,2,mean)
+avg_male_rtgs <- round(avg_male_rtgs, digits=2)
+
+Male_Ratings <- avg_male_rtgs
+
+
+# df with only females
+females <- movie_ratings[ which(movie_ratings$Gender=='Female'),]
+
+
+# df with only females and only numeric columns
+nums <- unlist(lapply(females, is.numeric))
+female_rtgs_only <- females[ , nums]
+
+# get average female ratings averaged to 2 digits and give it a nicer name
+avg_female_rtgs <- apply(female_rtgs_only,2,mean)
+avg_female_rtgs <- round(avg_female_rtgs, digits=2)
+avg_female_rtgs
+Female_Ratings <- avg_female_rtgs
+
+# combine and make comparative df
+gend_diff <- data.frame(rbind(Male_Ratings, Female_Ratings, Male_Ratings - Female_Ratings))
+gend_diff <-  gend_diff[,-c(1:2)] 
+gend_diff
+```
+
+#### Creage graph showing male and female average ratings per movie side by side
+
+```{r graph avg male to female ratings}
+
+# transpose dataframe
+
+rtg_by_gender <- as.data.frame(t(gend_diff))
+
+# drop change column
+rtg_by_gender <-  rtg_by_gender[,-c(3)] 
+
+# add index column
+movie <- rownames(rtg_by_gender)
+rtg_by_gender <- cbind(movie, rtg_by_gender)
+rtg_by_gender
+
+# convert to format needed to graph 2 variables
+rbg_melt <- melt(rtg_by_gender, id.vars='movie')
+rbg_melt
+
+# create and display graph
+f <- ggplot(rbg_melt, aes(x=movie, y=value, fill=variable)) +
+    geom_bar(stat='identity', position='dodge') + labs(title ="Movie Ratings By Gender", x = "Movies", y = "Average Rating")
+
+f
+
 ```
 

@@ -24,3 +24,31 @@ IGNORE 1 ROWS
 ;
 
 SELECT * FROM movie_ratings;
+
+SELECT 
+AVG(First_Purge), 
+AVG(Isle_of_Dogs),
+AVG(Christopher_Robin),
+AVG(Skyscraper),
+AVG(Blockers),
+AVG(Quiet_Place)
+ FROM movie_ratings;
+ 
+SELECT Gender, COUNT(Gender) FROM movie_ratings
+GROUP BY Gender
+ ;
+
+SELECT AVG(First_Purge), 
+AVG(Isle_of_Dogs),
+AVG(Christopher_Robin),
+AVG(Skyscraper),
+AVG(Blockers),
+AVG(Quiet_Place)
+FROM movie_ratings
+WHERE Gender = 'Female';
+
+SELECT
+    AVG(First_Purge), 
+    (SELECT AVG (First_Purge) FROM movie_ratings WHERE Gender = 'Female') FEM_AVG_First_Purge,   
+    (SELECT AVG(First_Purge) FROM movie_ratings ) - (SELECT AVG(First_Purge) FROM movie_ratings WHERE Gender = 'Female') AS First_Purge_Diff
+    FROM movie_ratings;
