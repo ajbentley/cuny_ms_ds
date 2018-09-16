@@ -1,0 +1,113 @@
+---
+title: "CUNY MSDS 607 Lab Week 3"
+author: "AJ Bentley"
+date: "September 14, 2018"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(dplyr)
+library(stringr)
+
+```
+
+#### Q3. The Simpsons
+Load data into R data frame
+
+```{r load data} 
+
+raw.data <-"555-1239Moe Szyslak(636) 555-0113Burns, C. Montgomery555-6542Rev. Timothy Lovejoy555 8904Ned Flanders636-555-3226Simpson, Homer5553642Dr. Julius Hibbert"
+
+raw.data
+```
+
+<br>
+
+Create name vector 
+_(used code from book)_
+
+```{r name charvar}
+
+name <- unlist(str_extract_all(raw.data, "[[:alpha:]., ]{2,}"))
+
+```
+
+<br>
+
+__Translate name list to first_name last_name__
+
+Pseudocode
+
+1. for any item in "name" that contains a ", " after a word and before another word, reverse the order of the words before and after.
+
+2. strip out any titles. be careful of Chuck Burns--that C. is an initial and not a title.
+
+
+```{r split names on comma}
+
+namefl <- str_replace_all(name, "([[:alpha:]]+)(, )([[:alpha:]].+)", "\\3 \\1")
+
+namefl2 <- str_replace_all(namefl, "[[:alpha:]]{2,}\\.", "")
+
+namefl2
+```
+
+<br>
+
+__Construct a logical vector indicating whether a character has a title.__
+
+```{r title?}
+
+str_detect(name, "[[:alpha:]]{2,}\\.")
+
+```
+
+<br>
+
+__Construct a logical vector indicating whether a character has a second name.__
+
+_I am assuming this means a middle name, though the names given exclude Homer and Dr. Hibbert's middle names (or that Rev. Lovejoy and Ned Flanders are both Jr.s)_
+
+
+```{r middle name}
+str_detect(namefl2, "(\\.\\ )\\w*\\ \\w*")
+
+```
+
+<br>
+
+#### Q4. Describe the types of strings that conform to the following regular expressions and construct an example that is matched by the regular expression.
+
+__1. [0-9]+\\$__
+
+    The end of the string is at least 1 number (e.g., 6541 or the last four digits of "asdf.4324")
+
+<br>
+
+__2. \\b[az]{1,4}\\b__
+
+    Any combination of the letters a and z that is less than 5 characters long (e.g., 'a', 'az', 'zaaz', 'aaax')
+
+<br>
+
+__3. .*?\\.txt$__
+
+    Any string that ends in '.txt' (e.g., 'bobsyouruncle.txt')
+
+<br>
+
+__4. \\d{2}/\\d{2}/\\d{4}__
+
+    2 digits followed by a slash followed by 2 digits followed by a slash followed by 4 digits (e.g., 10/23/1973)
+
+<br>
+
+__5. <(.+?)>.+?</\\1>__
+
+    Any number of non-lineterminating characters enclosed in <>, followed by any number of non-lineterminating characters, followed by a slash and the contents of the first set of non-lineterminating characters enclosed in <> (e.g. "<hard>thingsare</hard>")
+
+    
+    
+    
+    
