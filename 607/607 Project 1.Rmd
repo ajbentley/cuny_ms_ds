@@ -1,0 +1,236 @@
+---
+title: "CUNY MSDS 607 Project 1"
+author: "AJ Bentley"
+date: "September 20, 2018"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(dplyr)
+library(stringr)
+
+```
+
+
+#### In this project, we were given a text file with chess tournament results where the information has some structure. My job was to create an R Markdown file that generates a .CSV file with the following information for all of the players:
+- Player’s Name
+- Player’s State
+- Total Number of Points
+- Player’s Pre-Rating
+- Average Pre Chess Rating of Opponents
+
+<br>
+Load data into R data frame
+
+```{r load data} 
+
+mydata <- read.table("https://raw.githubusercontent.com/ajbentley/cuny_ms_ds/master/607/tournamentinfo.txt", header = TRUE, skip = 1, sep = "|", fill=TRUE)
+
+
+```
+
+#### Plan of attack
+__Create vectors for each of the requested data (Player's Name, Player's State, Total Number of Points, Player's Pre-Rating, and Average Pre Chess Rating of Opponents), then merge them into a dataframe.__
+
+
+```{r name vector}
+
+namevector <- mydata[['Player.Name']]
+
+name <- namevector[seq(3, length(namevector), 3)]
+
+dfs <- data.frame(name)
+head(dfs)
+
+```
+
+```{r state vector}
+
+statevector <- mydata[['Pair']]
+
+state <- statevector[seq(4, length(statevector), 3)]
+
+dfs$state <- state
+head(dfs)
+
+```
+
+
+```{r player points vector}
+
+points <- namevector[seq(4, length(namevector), 3)]
+
+pointsdf <- data.frame(points)
+pointsdf$points2 <- str_extract(pointsdf$points, "\\d{5,}")
+head(pointsdf)
+
+
+```
+
+```{r player pre rating vector}
+pointsdf$playerpre <- sub('.* R: ', '', pointsdf$points)
+pointsdf$playerpre <- sub('(.{4})(.*)', '\\1', pointsdf$playerpre)
+head(pointsdf)
+
+```
+
+
+
+```{r player number}
+
+playernumber <- statevector[seq(3, length(statevector), 3)]
+```
+
+
+```{r collect rows up until now}
+
+dfs$playernum <- as.numeric(playernumber)
+
+dfs <- dfs[c("playernum", "name", "state")]
+
+dfs$points <- pointsdf$points2
+dfs$playerrtg <- pointsdf$playerpre
+
+head(dfs)
+
+```
+
+Now I've got to add columns with each competitor for each player
+
+```{r competitors}
+r1vector <- mydata[['Round']]
+rnd1 <- r1vector[seq(3, length(r1vector), 3)]
+rnd1 <- str_extract(rnd1, "\\d+")
+
+r2vector <- mydata[['Round.1']]
+rnd2 <- r2vector[seq(3, length(r2vector), 3)]
+rnd2 <- str_extract(rnd2, "\\d+")
+
+r3vector <- mydata[['Round.2']]
+rnd3 <- r3vector[seq(3, length(r3vector), 3)]
+rnd3 <- str_extract(rnd3, "\\d+")
+
+r4vector <- mydata[['Round.3']]
+rnd4 <- r4vector[seq(3, length(r4vector), 3)]
+rnd4 <- str_extract(rnd4, "\\d+")
+
+r5vector <- mydata[['Round.4']]
+rnd5 <- r5vector[seq(3, length(r5vector), 3)]
+rnd5 <- str_extract(rnd5, "\\d+")
+
+r6vector <- mydata[['Round.5']]
+rnd6 <- r6vector[seq(3, length(r6vector), 3)]
+rnd6 <- str_extract(rnd6, "\\d+")
+
+r7vector <- mydata[['Round.6']]
+rnd7 <- r7vector[seq(3, length(r7vector), 3)]
+rnd7 <- str_extract(rnd7, "\\d+")
+
+dfs$rnd1 <- as.numeric(rnd1)
+dfs$rnd2 <- as.numeric(rnd2)
+dfs$rnd3 <- as.numeric(rnd3)
+dfs$rnd4 <- as.numeric(rnd4)
+dfs$rnd5 <- as.numeric(rnd5)
+dfs$rnd6 <- as.numeric(rnd6)
+dfs$rnd7 <- as.numeric(rnd7)
+
+head(dfs)
+```
+
+Make relatinal df of just the playernumber and playerrating
+
+
+```{r make relational db of number and rtg}
+df_pr <- data.frame(as.numeric(dfs$playernum), as.numeric(dfs$playerrtg))
+head(df_pr)
+
+
+```
+
+Now merge df_pr with dfs on dfs.playernum matching to each rnd column.
+
+```{r relate dfs}
+
+#merge the two dayparts on rnd1
+dfsr1 <- merge(dfs, df_pr, by.x = "rnd1", by.y = "as.numeric.dfs.playernum.", all.x = TRUE)
+dfsr1 <- merge(dfsr1, df_pr, by.x = "rnd2", by.y = "as.numeric.dfs.playernum.", all.x = TRUE, suffix = c(".x",".y"))
+
+# have to clean up titles as we go along
+colnames(dfsr1)[colnames(dfsr1)=="as.numeric.dfs.playerrtg..y"] <- "rnd1_oppscore"
+colnames(dfsr1)[colnames(dfsr1)=="as.numeric.dfs.playerrtg..x"] <- "rnd2_oppscore"
+
+dfsr1 <- merge(dfsr1, df_pr, by.x = "rnd3", by.y = "as.numeric.dfs.playernum.", all.x = TRUE, suffix = c(".x",".y"))
+colnames(dfsr1)[colnames(dfsr1)=="as.numeric.dfs.playerrtg."] <- "rnd3_oppscore"
+
+dfsr1 <- merge(dfsr1, df_pr, by.x = "rnd4", by.y = "as.numeric.dfs.playernum.", all.x = TRUE, suffix = c(".x",".y"))
+colnames(dfsr1)[colnames(dfsr1)=="as.numeric.dfs.playerrtg."] <- "rnd4_oppscore"
+
+dfsr1 <- merge(dfsr1, df_pr, by.x = "rnd5", by.y = "as.numeric.dfs.playernum.", all.x = TRUE, suffix = c(".x",".y"))
+colnames(dfsr1)[colnames(dfsr1)=="as.numeric.dfs.playerrtg."] <- "rnd5_oppscore"
+
+dfsr1 <- merge(dfsr1, df_pr, by.x = "rnd6", by.y = "as.numeric.dfs.playernum.", all.x = TRUE, suffix = c(".x",".y"))
+colnames(dfsr1)[colnames(dfsr1)=="as.numeric.dfs.playerrtg."] <- "rnd6_oppscore"
+
+dfsr1 <- merge(dfsr1, df_pr, by.x = "rnd7", by.y = "as.numeric.dfs.playernum.", all.x = TRUE, suffix = c(".x",".y"))
+colnames(dfsr1)[colnames(dfsr1)=="as.numeric.dfs.playerrtg."] <- "rnd7_oppscore"
+
+head(dfsr1)
+
+
+```
+
+Add a column averaging the scores
+
+```{r avg scores}
+
+dfsr1$avg_opponent_score <- rowMeans(dfsr1[c(13:19)], na.rm=TRUE)
+head(dfsr1)
+
+
+
+```
+
+Order in the data frame!
+
+```{r reorder and reset row names}
+
+dfsr1 <- dfsr1[order(dfsr1$playernum),]
+rownames(dfsr1) <- 1:nrow(dfsr1)
+
+head(dfsr1)
+```
+
+
+Time for cleanup!
+
+```{r remove vestigal columns}
+
+#removing columns not needed
+dfsr1 <- dfsr1[,-c(1:8)]
+dfsr1 <- dfsr1[,-c(5:11)]
+
+```
+
+```{r make avg an int}
+
+# making the average opponent score an integer, as intdicated in the assignment
+dfsr1$avg_opponent_score <- as.integer(dfsr1$avg_opponent_score)
+
+```
+
+Finished product
+
+```{r show data}
+dfsr1
+```
+
+Export to CSV
+
+```{r export}
+
+write.csv(dfsr1, file = "/Users/ajbentley/Dropbox/cuny_msds/607/Project 1/chess_data.csv")
+```
+
+
+
