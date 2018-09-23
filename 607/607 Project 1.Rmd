@@ -59,19 +59,26 @@ head(dfs)
 
 ```{r player points vector}
 
-points <- namevector[seq(4, length(namevector), 3)]
+pointsvector <- mydata[['Total']]
 
-pointsdf <- data.frame(points)
-pointsdf$points2 <- str_extract(pointsdf$points, "\\d{5,}")
-head(pointsdf)
+points <- pointsvector[seq(3, length(statevector), 3)]
 
+dfs$points <- points
+head(dfs)
 
 ```
 
 ```{r player pre rating vector}
-pointsdf$playerpre <- sub('.* R: ', '', pointsdf$points)
-pointsdf$playerpre <- sub('(.{4})(.*)', '\\1', pointsdf$playerpre)
-head(pointsdf)
+
+playerprerating <- namevector[seq(4, length(namevector), 3)]
+
+plypredf <- data.frame(playerprerating)
+
+plypredf$plypre <- sub('.* R: ', '', plypredf$playerprerating)
+
+plypredf$plypre <- sub('(.{4})(.*)', '\\1', plypredf$plypre)
+
+head(plypredf)
 
 ```
 
@@ -87,10 +94,9 @@ playernumber <- statevector[seq(3, length(statevector), 3)]
 
 dfs$playernum <- as.numeric(playernumber)
 
-dfs <- dfs[c("playernum", "name", "state")]
+dfs <- dfs[c("playernum", "name", "state", "points")]
 
-dfs$points <- pointsdf$points2
-dfs$playerrtg <- pointsdf$playerpre
+dfs$playerrtg <- plypredf$plypre
 
 head(dfs)
 
@@ -229,7 +235,7 @@ Export to CSV
 
 ```{r export}
 
-write.csv(dfsr1, file = "/Users/ajbentley/Dropbox/cuny_msds/607/Project 1/chess_data.csv")
+write.csv(dfsr1, file = "chess_data.csv")
 ```
 
 
