@@ -1,0 +1,217 @@
+---
+title: "607 Homework Week 5"
+author: "AJ Bentley"
+date: "September 27, 2018"
+output:
+  html_document:
+    theme: yeti
+    highlight: pygments
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(dplyr)
+library(tidyr)
+```
+
+#### Read in data
+
+```{r read in data}
+
+df <- read.csv("https://raw.githubusercontent.com/ajbentley/cuny_ms_ds/master/607/week5_hw_607_data.csv", header = TRUE)
+
+
+```
+
+```{r head}
+
+df
+
+```
+
+__Use tidyr and dplyr as needed to tidy and transform your data__
+
+    There are two ways to set this up, specifically the first two columns. Either it can be by airline and then by city or by city then by airline. In practice the decision would be driven by the client and the question. 
+    
+    The most likely questions would be:
+    
+    - What airline is best at keeping its schedule?
+    - What airport is best at keeping traffic moving smoothly? 
+
+    As the next part of the assignment asks to compare arrival delays I'll order as:
+    
+
+<br>
+
+__Planned Data Frame Format__
+```{r planned initial analysis format, echo=FALSE}
+
+df_format <- data.frame('Airline'= c('ALASKA', 'AMWEST'), 'City' = c('LA', 'SD'), 'On time'= c('ot count', 'ot count'), 'Delayed' = c('delayed count', 'delayed count'))
+
+df_format
+```
+
+1 - Remove blank lines from the data
+
+```{r remove blank rows}
+
+df <-  df %>% na.omit()
+df
+
+```
+
+
+2 - Fill in the empty cells in the first column with the values above it by first changing the blanks to NA and then using fill
+
+```{r fill empties, warning=FALSE}
+
+df <- df %>% 
+   mutate(X = na_if(X, "")) %>%
+   fill(X)
+
+df
+```
+
+
+3 - Move the cities into a column
+
+```{r cities to columns}
+
+df <- df %>% 
+  gather("City", "time", 3:7)
+   
+df
+```
+    
+4 - spread X.1 (on time / delayed) across two columns 
+
+```{r spread ot/d}
+
+df <- df %>%
+  spread("X.1", "time")
+df
+```
+    
+5 - change X to Airline and capitalize delayed and on time
+
+```{r change column names}
+
+df <- df %>% 
+  rename("Airline" = X, "Delayed" = delayed, "On time" = `on time`)
+
+df
+
+```
+
+
+Now let's try to do that with one tidy statement
+
+
+```{r tidy pipes}
+
+df2 <- read.csv("https://raw.githubusercontent.com/ajbentley/cuny_ms_ds/master/607/week5_hw_607_data.csv", header = TRUE)
+
+df2 <- df2 %>% na.omit() %>%         # remove blank lines
+  mutate(X = na_if(X, "")) %>%       # change blanks in Airline to NA
+  fill(X) %>%                        # fill blanks in Airline with value in cell above
+  gather("City", "time", 3:7) %>%    # move cities into a column
+  spread("X.1", "time") %>%          # spread on time and delayed into columns
+  rename("Airline" = X,              # change first column name to Airline
+         "Delayed" = delayed,        # capitalize delayed
+         "On time" = `on time`)      # capitalize on time
+
+head(df2)
+
+```
+
+<br>
+
+#### __Perform analysis to compare the arrival delays for the two airlines.__
+
+<br>
+
+__Planned Data Frame Format__
+```{r planned delay analysis format, echo=FALSE}
+
+df_d_format <- data.frame('City' = c('LA', 'SD'), 'ALASKA' = c('Del.time','Del.time'), 'AMWEST' = c('Del.time','Del.time'), 'Diff' = c('AL-AM','AL-AM'), 'Pct.Diff' = c('AL/AM-1','AL/AM-1'))
+
+
+df_d_format
+```
+
+
+```{r compare delays}
+
+df_d <- df2 %>% 
+  arrange(City) %>%                                   # order by City
+  select(City, Airline, Delayed) %>%                  # move City to first column and drop On Time column
+  spread("Airline", "Delayed") %>%                    # make each airline a col with delay info beneath
+  mutate(Difference = ALASKA - AMWEST) %>%            # make a col with the tot diff between airlines
+  mutate(Pct.Difference = (ALASKA / AMWEST) -1) %>%   # make a col with the ptc diff between airlines
+  mutate(rounded = round(Pct.Difference, 2)) %>%      # make a col with the pct diff rounded to 2 places
+  select(-('Pct.Difference')) %>%                     # drop the original pct. diff column
+  rename("Pct. Difference" = rounded)                 # rename the rounded column to Pct. Difference
+
+df_d
+
+
+```
+
+
+<br>
+
+#### __Because of the differences in number of flights in each airport and airline a comparison of the delays really don't make much sense to me so for my own enjoyment I'm going to look at the ratio of delayed to on time for each airline in each airport.__
+
+<br>
+
+__Planned Data Frame Format__
+```{r planned ratio analysis format, echo=FALSE}
+
+df_d_format <- data.frame('City'= c('LA', 'PHX'), 'ALASKA On time' = c("OT.Time",'OT.Time'), 'ALASKA Delayed' = c("Del.Time",'Del.Time'), 'ALASKA Ratio' = c("Del.Time / OT.Time","Del.Time / OT.Time"), 'AMWEST On time' = c("OT.Time",'OT.Time'), 'AMWEST Delayed' = c("Del.Time",'Del.Time'), 'AMWEST Ratio' = c("Del.Time / OT.Time","Del.Time / OT.Time"), 'Difference' = c("ALASKA Ratio - AMWEST Ratio"))
+                            
+
+df_d_format
+```
+
+
+```{r}
+head(df2)
+```
+
+```{r delay on time ratios}
+
+df_r <- df2 %>% 
+  arrange(City, Airline) %>%                           # order by City and Airline
+  select(City, Airline, Delayed, 'On time') %>%        # move City to first column
+  rename("On.Time" = `On time`) %>%                    # change On time to easier name to work with
+  gather("Del/OT", 'Count', 3:4) %>%                   # create column with both delay and ontime #s
+  unite(temp1, "Airline", "Del/OT", sep = ".") %>%     # merge airport name with delay or ontime
+  spread("temp1", "Count") %>%                         # make cols for each airport/time pair
+  mutate(ALASKA.Ratio =                                # make ALASKA ratio column
+           ALASKA.On.Time / ALASKA.Delayed) %>% 
+  mutate(AMWEST.Ratio =                                # make AMWEST ratio column
+           AMWEST.On.Time / AMWEST.Delayed) %>% 
+  mutate(Alaska.Ratio = round(ALASKA.Ratio, 1)) %>%    # round Alaska ratio column to 1 decimal
+  mutate(AMW.Ratio = round(AMWEST.Ratio, 1)) %>%       # round AMWEST ratio column to 1 decimal
+  select('City','ALASKA.On.Time', 'ALASKA.Delayed',    # reorder columns
+         'Alaska.Ratio', 'AMWEST.On.Time', 
+         'AMWEST.Delayed', 'AMW.Ratio')
+
+df_r
+
+```
+
+__I actually don't like the way this looks--too busy. I'm going to just show the two ratios.__
+
+
+```{r planned second ratio analysis format, echo=FALSE}
+
+dfr2 <- df_r %>% 
+  select('City','Alaska.Ratio', 'AMW.Ratio')
+
+dfr2
+
+```
+
+### __Now we can see that Alaska Airlines does a much better job at keeping its flights on time__
+
