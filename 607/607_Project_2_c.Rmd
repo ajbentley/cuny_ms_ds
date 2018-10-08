@@ -1,0 +1,424 @@
+---
+title: "607_Project_2_c"
+author: "AJ Bentley"
+date: "10/7/2018"
+output:
+  html_document:
+    theme: yeti
+    highlight: pygments
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE)
+
+library(tidyr)
+library(plyr)
+library(dplyr)
+library(stringr)
+library(knitr)
+library(ggplot2)
+
+```
+
+### The Data
+
+The data set is from market research that I did for a client who was developing a device to read how well done a piece of meat was.
+
+This is an excessively wide dataframe with nested column headers, many blank and unneccessary columns, and likert scale results across columns.
+
+
+__Plan of Attack__
+
+1. import data
+
+2. trim unneccesary columns
+
+3. separate likert columns in new DF and unify the responses, then join them to remaining columns of first DF
+
+4. convert columns that are "which of these would you want" types of questions to logical/binary
+
+5. analysis and conclusions
+
+<br>
+
+### Load data
+
+
+```{r load-data, eval=TRUE}
+
+mydata <- read.csv("https://raw.githubusercontent.com/ajbentley/cuny_ms_ds/master/607/Steak_Rite_Market_Test.csv", header = TRUE, blank.lines.skip	= TRUE)
+
+dim(mydata)
+head(mydata)
+
+```
+
+#### Trim columns
+
+There are columns here that are used to identify individual responses that are not neccessary. I also don't need to know when the survey was taken. 
+
+```{r trim columns}
+
+df <- mydata[,-c(2:9)]
+
+```
+
+<br>
+
+#### Create likert df
+
+Create the initial dataframe
+
+```{r create likert df}
+
+likert <- df[c(2:308),c(2:21)] # create DF from appropriate rows / columns
+
+likert[] <- lapply(likert, function(likert) as.numeric(as.character(likert)))  # convert data from factor to numeric
+
+head(likert)
+
+```
+
+Condense the answers into a single row
+
+```{r likert condense}
+
+likert[, "Reaction"] <- apply(likert[, 1:5], 1, max, na.rm=TRUE)
+likert[, "Innovative"] <- apply(likert[, 6:10], 1, max, na.rm=TRUE)
+likert[, "Need"] <- apply(likert[, 11:15], 1, max, na.rm=TRUE)
+likert[, "Likely2Buy"] <- apply(likert[, 16:20], 1, max, na.rm=TRUE)
+
+dim(likert)
+dim(df)
+
+
+```
+
+Because the main DF has 308 rows and likert only has 307 I have to either insert an artificial row into likert or remove a row from the main df.
+
+As I will eventually be cutting a secondary header row out of df I will do that work now and bring likert back in later.
+
+<br>
+
+#### Create important features df
+
+While the likert scale columns needed to be condensed, the columns that ask what the most important features are need to be converted to logical / binary.
+
+```{r important features df}
+
+features <- df[c(1:308),c(24:37)] # create DF from appropriate rows / columns
+
+fcl <- unlist(features[1,]) # create list to assign as column names
+
+colnames(features) <- fcl # assign fcl as column names to features
+
+features <- features[2:308,] # remove row that had feature names originally (making this a 307 row df)
+
+features[] <- lapply(features, function(features) as.numeric(as.character(features)))  # convert data from factor to numeric
+
+feats <- data.frame(is.na(features)) # create new dataframe that gives true/false if na
+
+feats[] <- lapply(feats, function(feats) as.factor(as.logical(feats)))  # convert data from factor to numeric
+
+feats <- as.data.frame(                                    # run through all columns in feats to change
+  lapply(feats, function(x) {                              # true to 0 and false to 1
+    levels(x)[levels(x) %in% c(TRUE)] <- 0
+    levels(x)[levels(x) %in% c(FALSE)] <- 1
+    x
+  }))
+
+feats[] <- lapply(feats, function(feats) as.numeric(as.factor(feats)))  # need to convert to num in order to join later
+
+head(feats)
+
+```
+
+<br>
+
+#### Single most important feature, who would buy, and demographics--a decision must be made
+
+For this section there are two ways to think about storing the data.
+
+If you are going to be doing any kind of modeling on it then it is best to keep each of these features in a separate column as they have no relationship to each other. 
+
+If you are going to be creating a relational database or just generating summary data it would be better to consolidate them in the same way that was done with the likert scales.
+
+As I will not be modeling on this any time soon, and as it is easy enough to dummy the variables out if I decide to later, I'll go with consolidation
+
+
+
+```{r most important feature}
+
+mif <- df[c(2:308),c(38:51)] # create DF from appropriate rows / columns
+
+mif[] <- lapply(mif, function(mif) as.numeric(as.character(mif)))  # convert data from factor to numeric
+
+mif[, "Most_Important_Feature"] <- apply(mif[, 1:14], 1, max, na.rm=TRUE) # consolidate
+
+head(mif)
+
+```
+
+
+```{r who would buy}
+
+who <- df[c(2:308),c(52:57)] # create DF from appropriate rows / columns
+
+who[] <- lapply(who, function(who) as.numeric(as.character(who)))  # convert data from factor to numeric
+
+who[, "Who_Would_Buy"] <- apply(who[, 1:6], 1, max, na.rm=TRUE) # consolidate
+
+head(who)
+
+```
+
+```{r age}
+
+age <- df[c(2:308),c(58:62)] # create DF from appropriate rows / columns
+
+age[] <- lapply(age, function(age) as.numeric(as.character(age)))  # convert data from factor to numeric
+
+age[, "AgeRange"] <- apply(age[, 1:5], 1, max, na.rm=TRUE) # consolidate
+
+head(age)
+
+```
+
+```{r gender}
+
+gen <- df[c(2:308),c(63:64)] # create DF from appropriate rows / columns
+
+gen[] <- lapply(gen, function(gen) as.numeric(as.character(gen)))  # convert data from factor to numeric
+
+gen[, "Gender"] <- apply(gen[, 1:2], 1, max, na.rm=TRUE) # consolidate
+
+head(gen)
+
+```
+
+```{r income}
+
+income <- df[c(2:308),c(65:75)] # create DF from appropriate rows / columns
+
+income[] <- lapply(income, function(income) as.numeric(as.character(income)))  # convert data from factor to numeric
+
+income[, "IncomeRange"] <- apply(income[, 1:11], 1, max, na.rm=TRUE) # consolidate
+
+head(income)
+
+```
+
+```{r region}
+
+region <- df[c(2:308),c(76:84)] # create DF from appropriate rows / columns
+
+region[] <- lapply(region, function(region) as.numeric(as.character(region)))  # convert data from factor to numeric
+
+region[is.na(region)] <- 0   # needed to include this because some didn't fill this out leading to the max being infinity
+
+region[, "Region"] <- apply(region[, 1:9], 1, max, na.rm=TRUE) # consolidate
+
+head(region)
+
+```
+
+```{r device}
+
+device <- df[c(2:308),c(85:90)] # create DF from appropriate rows / columns
+
+device[] <- lapply(device, function(device) as.numeric(as.character(device)))  # convert data from factor to numeric
+
+device[, "Device"] <- apply(device[, 1:6], 1, max, na.rm=TRUE) # consolidate
+
+head(device)
+
+```
+
+<br>
+
+#### Create short dfs for remaining columns
+
+At this point the majority of columns have been processed in such a way that only 307 rows exist. For the 2 remaining I'll do the same and then reconstitute the dataframe
+
+```{r trim remaining}
+
+remain <- df[c(2:308),c(22:23)] # create DF from appropriate rows / columns
+
+head(remain)
+
+```
+
+```{r reconstitute}
+
+df1 <- data.frame(cbind(likert[1:307,21:24], remain[1:307,1:2], feats[1:307,1:14],  mif[1:307,15], who[1:307,7], age[1:307,6], gen[1:307,3], income[1:307,12],region[1:307,10], device[1:307,7]))
+
+head(df1)
+```
+
+<br>
+
+#### Polishing
+
+We now have a solid dataframe we can use for analysis, but there are a few tweaks to make.
+
+- Many column headings need to be cleaned
+
+- Codes in many columns can be replaced by their values
+
+<br>
+
+__Clean Column Names__
+
+```{r clean heads}
+
+colnames(df1)[5:6] <- c("Recommend",'ExpPrice')
+
+colnames(df1)[21:27] <- c('MostImpFeat', 'WhyBuy', 'AgeRange', 'Gender','IncomeRange', 'Region', 'DeviceUsed')
+
+colnames(df1)
+
+head(df1)
+```
+
+
+<br>
+
+__Replace number keys with values__
+
+```{r Replace number keys with values}
+
+df1[,21:27]<-lapply(df1[,21:27], factor)  # convert numeric to factor in the appropriate columns
+
+df1$MostImpFeat <- revalue(df1$MostImpFeat, c('1' = 'No batteries', 
+                                              '2' = 'Water resistant',	
+                                              '3' = 'Easy to clean',	
+                                              '4' = 'Easy to read',	
+                                              '5' = 'Easy to use',	
+                                              '6' = 'High tech',	
+                                              '7' = 'Attractive',	
+                                              '8' = 'Easy to hold',	
+                                              '9' = 'Doesn\'t damage food',	
+                                              '10' =  'Doesn\'t lose juices',	
+                                              '11' = 'Quality of materials',	
+                                              '12' = 'Usable for poultry',	
+                                              '13' = 'Usable for fish',	
+                                              '14' = 'Usable for pork'))
+
+df1$WhyBuy <- revalue(df1$WhyBuy, c('1' = 'Use for self / household',	
+                                    '2' = 'Birthday gift',	
+                                    '3' = 'Holiday gift', 
+                                    '4' = 'Housewarming gift',	
+                                    '5' = 'Other gift',	
+                                    '6' = 'For cooking professional'))
+
+
+df1$AgeRange <- revalue(df1$AgeRange, c('1' = 'Under 18',	
+                                        '2' = '18 - 29',	
+                                        '3' = '30 - 44',	
+                                        '4' = '45 - 59',	
+                                        '5' = '60+'))
+                        
+                        
+df1$Gender <- revalue(df1$Gender, c('1' = 'Female',	'2' = 'Male'))
+
+
+df1$IncomeRange <- revalue(df1$IncomeRange, c('1' = '$0 to $9,999',	
+                                              '2' = '$10,000 to $24,999',	
+                                              '3' = '$25,000 to $49,999',	
+                                              '4' = '$50,000 to $74,999',	
+                                              '5' = '$75,000 to $99,999',	
+                                              '6' = '$100,000 to $124,999',	
+                                              '7' = '$125,000 to $149,999',	
+                                              '8' = '$150,000 to $174,999',	
+                                              '9' = '$175,000 to $199,999',	
+                                              '10' = '$200,000 and up',	
+                                              '11' = 'Prefer not to answer'))
+
+
+df1$Region <- revalue(df1$Region, c('1' = 'New England',	
+                                    '2' = 'Middle Atlantic',	
+                                    '3' = 'East North Central',	
+                                    '4' = 'West North Central',	
+                                    '5' = 'South Atlantic',	
+                                    '6' = 'East South Central',	
+                                    '7' = 'West South Central',	
+                                    '8' = 'Mountain',	
+                                    '9' = 'Pacific'))
+
+
+df1$DeviceUsed <- revalue(df1$DeviceUsed, c('1' = 'iOS Phone / Tablet',	
+                                            '2' = 'Android Phone / Tablet',	
+                                            '3' = 'Other Phone / Tablet',	
+                                            '4' = 'Windows Desktop / Laptop',	
+                                            '5' = 'MacOS Desktop / Laptop',	
+                                            '6' = 'Other'))
+
+
+
+```
+
+
+```{r binary shift}
+
+df1[,7:20]<- df1[,7:20]-1  # This is just adjusting the binary numerics in these columns from 1 and 2 to 
+                           # 0 and 1--a personal preference
+
+```
+
+
+<br>
+
+### Analysis & Conclusions
+
+1 - Pull averages for Reaction, Innovative, Need, Likely to Buy, Would Recommend, and Expected price
+
+```{r averages}
+
+df1 %>% summarise_at(c("Reaction", "Innovative", "Need", "Likely2Buy", "Recommend", "ExpPrice"), mean)
+
+```
+
+<br>
+
+*Reaction through Likely2Buy 1 is best, 5 is worst.*
+
+*Recommend 10 is best 1 is worst*
+
+Reaction was positive and people saw the product as innovative, but not overwhelmingly so in either case.
+
+They do not perceive the product as something they need, nor are they likely to buy it and they aren't eager to recommend it.
+
+The client had hoped to sell the item for around \$20-$25 so the expected price isn't far off.
+
+
+
+<br>
+
+2 - What are the most important features and who would buy this?
+```{r most imp feature count}
+
+df1 %>% 
+  group_by(MostImpFeat) %>%
+  summarise(no_rows = length(MostImpFeat))
+
+```
+
+The most important thing, by far, is that the unit is easy to use. People also like that it wouldn't damage the food or let juices out, as well as that it doesn't need batteries.
+
+
+
+<br>
+
+3 - What person would someone buy this for?
+
+```{r most WhyBuy count}
+
+df1 %>% 
+  group_by(WhyBuy) %>%
+  summarise(no_rows = length(WhyBuy))
+
+
+```
+
+Most folks think that this is something that someone would buy for themselves, not as a gift. 
+

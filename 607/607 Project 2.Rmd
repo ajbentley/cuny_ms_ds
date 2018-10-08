@@ -1,0 +1,281 @@
+---
+title: "607 Project 2 a"
+author: "AJ Bentley"
+date: "October 1, 2018"
+output:
+  html_document:
+    theme: yeti
+    highlight: pygments
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+library(plyr)
+library(dplyr)
+library(lubridate)
+library(stringr)
+library(knitr)
+library(ggplot2)
+
+```
+
+## The Data
+
+The kitchen areas at FreeAgent are usually very clean but in this scenario, let’s imagine that we have been very messy recently! We haven’t been putting our mugs in the dishwasher or generally keeping the kitchen clean so we’ve designed a daily rota to make sure that one person is responsible for giving the kitchen a five-minute blitz after lunchtime.
+
+The data science team are interested in analyzing the data to find out why people became so messy in the first place, so we asked everyone to keep details of their cleaning duty in a shared spreadsheet. We asked them:
+
+- their name
+
+- the date when they last cleaned the kitchen
+
+- whether the dishwasher was full at the time
+
+- the number of mugs they found on the side
+
+- whether they wiped the sides or sink
+
+
+```{r load-data, eval=TRUE}
+mydata <- read.csv("https://raw.githubusercontent.com/ajbentley/cuny_ms_ds/master/607/cleaning_data.csv", 
+                   header = TRUE, colClasses = "character")
+
+dim(mydata)
+kable(mydata)
+```
+
+This looks like a great data set for cleaning!
+
+- date_cleaned: an onerous process before I discovered the joys of lubridate
+
+- name: This is a really tricky one, not because of the complexity of cleaning but because I have to assume what is meant. For example, "Davida" is a [female name](https://nameberry.com/babyname/Davida), though an uncommon one, but it could also be David A. Similarly I have no way of knowing whether Dave or Davie are one of the Davids or even if Davie is a misspelling of Dave. Honestly, if I was working on this professionally I would have to get in touch with the client to verify the names. As is I'm not going to touch it since assuming things about people's names seems unwise.
+
+- sides_and_sink: For this I'll create two columns, one for sides and one for sink. 
+
+- Dishwasher Full: Doesn't look like it needs cleaning.
+
+- no_of_mugs: interesting decisions to be made. I can either add min and max columns, populating both with the same number when there is just one number, create buckets, or take the average of the ranges. Of particular concern is David A's 4-14, which is somewhat nonsensical and I'm tempted to just NA it.
+
+- Notes: Another column that I could do some cleaning on but unless I know that some sort of analysis will be done requiring it to have proper spelling and grammar I don't see a reason why I should.
+
+*__Please note__, while the article this is taken from (which includes instructions on how to clean it, but I am not going to look at them) mentions that there is a duplicated row this is not evident in the data provided on the site to download. It also makes some note about how Davida should have put an NA in instead of a 0 because everyone was out of the office--that makes no sense at all to me so I am not doing it.*
+
+<br>
+
+#### Date cleaned
+
+It looks like all of the dates follow the European format (day/month/year), so that makes things easier than if they were mixed formats, especially with lubridate, my favorite function ever.
+
+```{r date column}
+
+df <- mydata
+
+df$date_cleaned <- dmy(df$date_cleaned)  # dmy is a lubridate function
+
+kable(df[,1])
+```
+
+<br>
+
+Knowing what day of the week each of these days corresponds to will also be useful
+
+```{r dow}
+
+df$dow <- weekdays(as.Date(df$date_cleaned)) # add column that reflects DoW
+
+df$dow <- as.factor(df$dow)
+
+df <- df[,c(1,7,2:6)] # Move DoW column next to Date
+
+colnames(df)
+
+```
+
+<br>
+
+#### Sides and Sink
+
+Creating columns for sides and sink that check whether that column has the words "side", "sink", or "both". These are logical vectors and depending on what was going to be done with the data I might transform these to binary (also might do the same with dishwasher full). 
+
+```{r sides and sink}
+
+df$sides <- str_detect(df$sides_and_sink,("side|both"))
+
+df$sink <- str_detect(df$sides_and_sink,"sink|both")
+
+kable(df[,8:9])
+```
+
+
+<br>
+
+#### Number of Mugs
+
+The easiest thing to do here is to assume that either the largest or smallest number written is accurate enough. A little harder would be to take the average of the high and low (if present). Why not have some fun?
+
+
+```{r number of mugs}
+
+df$mugslow <- as.numeric(str_extract(df$no_of_mugs,"[:digit:]+"))     # extract the first set of uninterupted digits
+df$mugshigh <- as.numeric(str_extract(df$no_of_mugs,"(?<=\\D)[:digit:]+"))   # extract uninterupted digits following non-digits
+
+n <- which(is.na(df$mugshigh))  # replace NA in mugshigh with the value in mugslow
+df[n, "mugshigh"] <- df[n, "mugslow"]
+
+df$no_of_mugs <- rowMeans(df[c('mugshigh', 'mugslow')])     # calculate the average of the mugs
+
+mugcount <- c(df$mugslow-df$mugshigh) # creating a vector that will be used later to determine if the column 
+                                      # for number of columns is being filled out correctly
+
+kable(df[,6:11])
+
+```
+
+<br>
+
+#### Final cleaning
+
+Reduce and reorder columns
+
+```{r clean}
+
+df <- df %>% select("date_cleaned", "dow", "name", "no_of_mugs", "dishwasher_full", "sides", "sink", "notes")
+
+kable(df)
+
+```
+
+### Analysis
+
+__What day are there the most mugs?__
+
+```{r day with most mugs}
+
+df_day <- df %>% 
+  group_by(dow) %>% 
+  summarize(mugs = sum(wday(no_of_mugs))) # group by day of week
+
+df_day$dow <- factor(df_day$dow, levels= c("Monday", "Tuesday", "Wednesday", "Thursday", "Friday")) #set day of week factors in order
+
+df_day <- df_day[order(df_day$dow), ] # Order days chronologically
+
+df_day
+
+
+```
+
+Thursdays are clearly the biggest days for mug usage with Wednesdays close behind.
+
+Lets graph it
+
+
+```{r plot mugs}
+
+p<-ggplot(data=df_day, aes(x=dow, y=mugs), main="Dirty Mugs by Day of Week") +
+  geom_bar(stat="identity", fill = "darksalmon") + geom_text(aes(label=mugs), vjust=1.6, size=5)
+p
+
+
+```
+
+I guess on Monday folks are rested from the weekend, then they need some help getting through the rest of the week until Friday. As these data were collected in the summer, maybe the company had summer Fridays.
+
+<br>
+
+__Are men or women more likely to wash either the sides or sink?__
+
+Gender wasn't collected with this information but can be determined. There are resources available to determine likely gender if it were needed for a larger data set.
+
+```{r m/f clean more}
+
+dfga <- df  # create new dataframe
+
+dfga$gender <- as.factor(c('F', 'M', 'F', 'M', 'M', 'F', 'M', 'M', 'M' ))  # create a vector with genders
+
+gcount <- data.frame("gender" = c("F", "M"), "count" =c(sum(dfga$gender == 'F'),sum(dfga$gender == 'M'))) #create a df of gender and counts of gender
+
+dfga$anywash <- (dfga$sides + dfga$sink) # create a vector that sums the sink and sides columns
+
+dfga$anytrue <- dfga$anywash>0  # create a logical vector where TRUE is any cell that is over 0
+
+dfga$anytrue <- as.integer(as.logical(dfga$anytrue)) # coerce the anywtrue vector to integer
+
+dfgb <- dfga[,c(9:11)]  # subset to just have the gender count and anywtrue columns
+
+dfgb <- na.omit(dfgb) # remove NA from analysis
+
+dfgwash <- dfgb %>% 
+  group_by(gender) %>% 
+  summarize("washed" = sum(anytrue)) # group by gender for anywtrue
+
+dfgwash <- data.frame(dfgwash) # make df of prior group
+
+dfw <- join(gcount, dfgwash) # join the washed and gender count dataframes
+
+dfw$pct <- dfw$washed / dfw$count # create vector for % of each gender to have washed
+
+dfw
+
+```
+
+
+
+__Are men or women more likely to fill out the form completely?__
+
+
+```{r m/f complete form more}
+dffa <- df  # create new dataframe
+
+dffa$gender <- as.factor(c('F', 'M', 'F', 'M', 'M', 'F', 'M', 'M', 'M' ))  # create a vector with genders
+
+# gcount <- data.frame("gender" = c("F", "M"), "count" =c(sum(dfga$gender == 'F'),sum(dfga$gender == 'M'))) #create a df of gender and counts of gender
+
+dffa$mugcount <- mugcount # create a vector that reflects whether there was a range put into the mug count instead of a number
+
+dffa$mugcount <- dffa$mugcount!=0  # create a logical vector where TRUE is any cell does not equal 0 (where there was a diff b/n high and low count)
+
+dffa$na_count <- apply(dffa, 1, function(x) sum(is.na(x)))
+
+dffa$mugcount <- as.integer(as.logical(dffa$mugcount)) # coerce the anywtrue vector to integer
+
+dffb <- dffa[,c(10:11)] # subset to just have the mugcount and na_count columns
+
+dffb$complete <- rowSums (dffb) # create vector to add mugcount and na_count
+
+dffb$gender <- dffa[,c(9)] # bring in gender vector
+
+dffb$complete <- as.integer(as.logical(dffb$complete)) # coerce the complete vector to integer
+
+#dffb$complete <- dffb$complete==0  # create a logical vector where TRUE is any cell equals 0
+
+dffcomplete <- dffb %>% 
+  group_by(gender) %>% 
+  summarize("complete" = sum(complete)) # group by gender for complete
+
+dffcomplete
+
+dffcomplete <- data.frame(dffcomplete) # make df of prior group
+
+dfc <- join(gcount, dffcomplete) # join the complete and gender count dataframes
+
+dfc$pct <- dfc$complete / dfc$count # create vector for % of each gender to have washed
+
+dfc
+
+```
+
+<br>
+
+### Conclusion
+
+Employees clearly need more direction in how to fill out these forms. The most successful method would probably to provide some sort of incentive for correctly filling it out.
+
+Thursdays have the most dirty mugs--should make sure to keep on top of it these days.
+
+Men and woman are equally likely (about 2/3) to clean either the sides or the sink.
+
+Men are more likely to completely fill the form.
+
+
+

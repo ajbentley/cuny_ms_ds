@@ -1,0 +1,336 @@
+---
+title: "607 Project 2b: Poverty in the US"
+author: "AJ Bentley"
+date: "10/3/2018"
+output:
+  html_document:
+    theme: yeti
+    highlight: pygments
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE)
+
+library(plyr)
+library(dplyr)
+library(stringr)
+library(knitr)
+library(ggplot2)
+
+```
+
+### The Data
+
+The data set is of poverty levels in the US by selected characteristics. It seemed like and incredibly daunting data set but I thought I would challenge myself.
+
+It is laid out such that there are actually 9 data frames, most of which have subsets within the data and all falling below a multilevel header.
+
+__Plan of Attack__
+
+1. import data without unneeded top lines
+
+2. trim footer and category rows
+
+3. trim *total* columns and name columns
+
+4. clean cells (excess periods, white space, a-hats, footnote numbers)
+
+5. add columns to indicate footnote and remove asterisks from change columns
+
+6. remove duplicate age rows and move 25+ row
+
+7. assign row names
+
+8. plot data
+
+9. analysis and conclusions
+
+<br>
+
+### Load data
+
+The first five rows are are title and sourcing notes, or blank lines. The next 6 are the very messy headers which I realized as I moved forward I could discard once I had the names of them.
+
+```{r load-data, eval=TRUE}
+
+mydata <- read.csv("https://raw.githubusercontent.com/ajbentley/cuny_ms_ds/master/607/census_dirty.csv", header = FALSE, skip=11, blank.lines.skip	= TRUE, colClasses = "character")
+
+dim(mydata)
+kable(mydata)
+
+```
+
+
+### Trim Rows
+
+#### Strip out footers
+
+Below the data were several rows of footnotes. 
+
+I'll be creating the working data frame in this code.
+
+```{r strip out footers}
+
+df <- mydata[1:53,]
+
+kable(df[1:10,1:5])
+
+```
+
+<br>
+
+#### Strip out category rows
+
+Each section had a section header (such as "Sex" or "Age"). These can be removed as the names of the rows below are understandable without them, though documentation will be helpful for clarification.
+
+```{r strip out category rows, warning = FALSE}
+df <- df %>%                  # Rows that have category titles (like Sex or Age)
+  filter(V2 != "")            # have no data in the other columns so we can get
+                              # rid of rows that have no data in column 2
+
+kable(df[1:10,1:3])
+
+```
+
+### Trim Columns
+
+#### Strip out "total" columns"
+
+There are a couple of columns that are totals of sections that aren't necessary. 
+
+```{r strip out "total"" columns}
+
+df <- df[,-c(2,7)] 
+
+dim(df)
+```
+
+<br>
+
+#### Name columns
+
+Apply appropriate column names to columns
+
+```{r name columns}
+
+colnames(df) <- c("Characteristic", "2016 Num", "2016 Num Margin of error", "2016 Pct", "2016 Pct Margin of Error", "2017 Num", "2017 Num Margin of error", "2017 Pct", "2017 Pct Margin of Error", "Num Change Y2Y", "Pct Change Y2Y")
+
+colnames(df)
+
+```
+
+<br>
+
+### Clean cells
+
+#### Strip out excess periods
+
+Throughout Characteristic column there are strings of periods used for spacing. They need to be removed.
+
+```{r strip out excess periods}
+
+df$Characteristic <- str_extract(df$Characteristic, "[\\w\\s\\d\\,]+")
+
+kable(df[1:10,1:3])
+
+```
+
+<br>
+
+#### Strip out white space
+
+Remove spaces at the front of row names that were subsets
+
+
+```{r remove spaces}
+
+df$Characteristic <- str_trim((df$Characteristic), side = c('left'))
+
+kable(df[1:10, 1:2])
+
+
+```
+
+<br>
+
+#### Remove a-hats that are attached to several strings
+
+Up until today there had been an a-hat ( â ) at the end of many lines. I had made code to remove them, below, but commented it out so that it would run now that those symbols were no longer present (and so I would have the code in place in case they magically reappeared).
+
+I believe this to be an issue of having worked on the code first on a PC and then on a Mac
+
+*if running on a PC please remove comments in this chunk*
+
+```{r remove ahats}
+
+
+
+# df[] <- lapply(df, gsub, pattern='?', replacement='')
+
+# kable(df[1:10, 1:2])
+
+
+
+```
+
+
+<br>
+
+#### Strip out Footnote indicators
+
+A few of the row names have footnotes (which have been deleted). The numbers for the footnotes are still there, though.
+
+I had to be careful to only delete numbers that were attached to words.
+
+
+```{r strip out footnote indicators}
+
+df$Characteristic <- str_replace_all(df$Characteristic, "(?<=\\p{L})\\d+", "")
+
+kable(df[1:10, 1:2])
+
+```
+
+
+<br>
+
+#### Add footnote indicator
+
+In the Y2Y change columns the data has asterisks in cells where change is statistically different from zero at the 90 percent confidence level.
+
+I'm going to create a separate column for both change measures to indicate whether this note is applicable, allowing the original columns to be treated as numeric.
+
+```{r make asterisk columns}
+
+df$Y2Ynum_N <- str_detect(df$`Num Change Y2Y`, "\\*")
+df$Y2Ypct_N <- str_detect(df$`Pct Change Y2Y`, "\\*")
+
+df$Y2Ypct_N
+
+
+```
+
+
+<br>
+
+#### Remove asterisks from change columns
+
+Now that I have columns indicating whether the changes were footnoted I can remove the asterisks, allowing the data in these columns to be treated as numeric.
+
+```{r remove asterisks}
+
+df$`Num Change Y2Y` <- as.numeric(str_replace_all(df$`Num Change Y2Y`, "\\*", ""))
+df$`Pct Change Y2Y` <- as.numeric(str_replace_all(df$`Pct Change Y2Y`, "\\*", ""))
+
+kable(df[,10:11])
+```
+
+<br>
+
+#### Create column identifying when there had been a footnote in the change columns
+
+
+```{r logical to binary}
+
+logcols <- sapply(df, is.logical)                 # identify logical columns
+df[,logcols] <- lapply(df[,logcols], as.factor)   # change those columns to factors
+
+df$Y2Ynum_N <- revalue(df$Y2Ynum_N, c("TRUE"="low conf", "FALSE"="")) # where there had been a label before value cell as "low confidence"
+df$Y2Ypct_N <- revalue(df$Y2Ypct_N, c("TRUE"="low conf", "FALSE"="")) # and where there had not been a label blank out the cell.
+
+df[,12:13]
+```
+
+### Strip out Duplicate age rows
+
+The A18-64 number is found in 3 rows. Removed all but the first.
+
+```{r strip out duplicate age rows}
+                            
+df <- df[df$Characteristic!="Total, aged 18 to 64?",]
+
+df[,1]
+```
+
+<br>
+
+#### Rename and move A25+ row up to other ages
+
+There is a row that reflects the number of people aged 25 or older that is with the education section. I moved it up with the other age rows.
+
+```{r move age 25+ row up to other ages}
+
+df <- df[c(1:9, 29, 10:28, 30:33), ]
+
+df[10,1] <- "Aged 25 and older"
+
+df[,1]
+
+```
+
+<br>
+
+#### Make de jure row names into de facto row names
+
+```{r make col 1 row names}
+
+rownames(df) <- NULL
+
+df[,1]
+
+```
+
+
+### Show and save final dataframe
+
+Finished product
+
+```{r show data}
+
+df
+
+```
+
+Export to CSV
+
+```{r export}
+
+write.csv(df, file = "census_poverty.csv")
+```
+
+
+I have tried for about 3 hours now to get the chart below to reflect the descending order.  P L E A S E cover this since nothing online seems to have an answer and this is the second time I've sunk this much effort into solving something just like this and it makes NO SENSE AT ALL.
+
+```{r diverging lolipops,  fig.width=7.5, fig.height=7}
+
+dflol <- df
+
+dflol$Characteristic <- as.factor(dflol$Characteristic)
+
+ggplot(dflol, aes(x=Characteristic, y=`Pct Change Y2Y`, label=`Pct Change Y2Y`)) +
+  geom_point(stat='identity', fill="red", size=8)  +
+  geom_segment(aes(y = 0, 
+                   x = Characteristic, 
+                   yend = `Pct Change Y2Y`, 
+                   xend = Characteristic), 
+               color = "red") +
+  geom_text(color="white", size=3.5) +
+  labs(title="Percent Change in Individuals below Poverty Level", 
+       subtitle="2016-2017") + 
+  ylim(-2, 1) +
+  coord_flip()+
+  scale_x_discrete(limits = rev(levels(dflol$Characteristic)))
+
+```
+
+### Analysis and Conclusion
+
+Poverty is on the decline, in general, though in the Northeast it is still on the rise (+0.6%). Also showing some growth in poverty levels are people who have bachelor degrees (+0.3%), have not worked for at least a week (+0.2%), and are naturalized citizens (+0.1%).
+
+By far the greatest decline in poverty rate is among people with disabilities (-1.9%).
+
+Other strong areas of poverty decline are among those working less than full time (-1.2%), Hispanic (-1.1%), living in the West (-1.1%), in rural areas (Outside MSAs -1.0%), and those who are not citizens (-0.9%).
+
+If there is confluence between the factors that are showing decline in poverty, it paints a picture of a young-middle age non-citizen latino who does part-time work in the rural west, possibly a day worker. This unfortunately supports the "they are taking our jobs" and general xenophobic mentality that is increasingly pervasive in the country.
+
+
