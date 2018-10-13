@@ -1,0 +1,31 @@
+{“media ecology books”  :  [
+{
+“title” : “Amusing Ourselves To Death” ,
+“author” : “Neil Postman” ,
+“subject” : “Media Ecology” ,
+“year” : 1985
+“wikiurl” : “https://en.wikipedia.org/wiki/Amusing_Ourselves_to_Death” ,
+“amazonurl” : ”https://www.amazon.com/Amusing-Ourselves-Death-Discourse-Business/dp/014303653X/“ ,
+“isbn13” : 9780413404404
+} ,
+{
+“title” : “Understanding Media” ,
+“author” : “Marshall McLuhan” ,
+“subject” : “Media Ecology” ,
+“year” : 1964
+“wikiurl” : “https://en.wikipedia.org/wiki/Understanding_Media” ,
+“amazonurl” : ”https://www.amazon.com/Understanding-Media-Extensions-Marshall-McLuhan/dp/0262631598/“ ,
+“isbn13” : 9780262631594
+} ,
+{
+“title” : “Of Ong and Media Ecology: Essays in Communication, Compositon, and Literacy Studies” ,
+“author” : [
+“Thomas Farrell” ,
+“Paul Soukup”
+] ,
+“subject” : “Media Ecology” ,
+“year” : 2012
+“amazonurl” : ”https://www.amazon.com/Ong-Media-Ecology-Communication-Compositon/dp/161289075X/“ ,
+“isbn13” : 9781612890753
+}]
+}
