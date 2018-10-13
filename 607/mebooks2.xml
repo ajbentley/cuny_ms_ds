@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<books>
+   <book>
+      <title>Amusing Ourselves To Death</title>
+      <author>Neil Postman</author>
+      <subject>Media Ecology</subject>
+      <year>1985</year>
+      <wiki>https://en.wikipedia.org/wiki/Amusing_Ourselves_to_Death</wiki>
+      <amazon>https://www.amazon.com/Amusing-Ourselves-Death-Discourse-Business/dp/014303653X/</amazon>
+      <isbn13>9780413404404</isbn13>
+   </book>
+   <book>
+      <title>Understanding Media</title>
+      <author>Marshall McLuhan</author>
+      <subject>Media Ecology</subject>
+      <year>1964</year>
+      <wiki>https://en.wikipedia.org/wiki/Understanding_Media</wiki>
+      <amazon>https://www.amazon.com/Understanding-Media-Extensions-Marshall-McLuhan/dp/0262631598</amazon>
+      <isbn13>9780262631594</isbn13>
+   </book>
+   <book>
+      <title>Of Ong and Media Ecology: Essays in Communication, Compositon, and Literacy Studies</title>
+      <author>Thomas Farrell</author>
+      <author>Paul Soukup</author>
+      <subject>Media Ecology</subject>
+      <year>2012</year>
+      <amazon>https://www.amazon.com/Ong-Media-Ecology-Communication-Compositon/dp/161289075X/</amazon>
+      <isbn13>9781612890753</isbn13>
+   </book>
+</books>
