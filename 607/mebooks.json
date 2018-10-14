@@ -1,7 +1,7 @@
 [
 {
 "title" : "Amusing Ourselves To Death" ,
-"author" : "Neil Postman" ,
+"author(s)" : "Neil Postman" ,
 "subject" : "Media Ecology" ,
 "year" : 1985 ,
 "wikiurl" : "https://en.wikipedia.org/wiki/Amusing_Ourselves_to_Death" ,
@@ -10,7 +10,7 @@
 } ,
 {
 "title" : "Understanding Media" ,
-"author" : "Marshall McLuhan" ,
+"author(s)" : "Marshall McLuhan" ,
 "subject" : "Media Ecology" ,
 "year" : 1964 ,
 "wikiurl" : "https://en.wikipedia.org/wiki/Understanding_Media" ,
@@ -19,10 +19,7 @@
 } ,
 {
 "title" :  "Of Ong and Media Ecology: Essays in Communication, Composition, and Literacy Studies" ,
-"author" : [{
-"Thomas Farrell"
-"Paul Soukup"}
-] ,
+"author(s)" : "Thomas Farrell and Paul Soukup" ,
 "subject" : "Media Ecology" ,
 "year" : 2012 ,
 "amazonurl" : "https://www.amazon.com/Ong-Media-Ecology-Communication-Compositon/dp/161289075X/" ,
