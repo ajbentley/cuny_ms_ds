@@ -1,0 +1,913 @@
+,Skills,Indeed,CareerBuilder,LinkedIn,Total
+1,.NET Framework,2,0,0,2
+2,A/B Testing,2,0,0,2
+3,Account Management,4,1,1,6
+4,Account Reconciliation,3,0,0,3
+5,Accounting,1,3,38,42
+6,Accumulo,1,0,4,5
+7,Acquisitions,1,1,0,2
+8,Acting,1,2,1,4
+9,Active DoD Secret Clearance,1,0,0,1
+10,Actuarial Science,3,1,4,8
+11,Ad Hoc Reporting,3,0,0,3
+12,Administration,1,6,12,19
+13,Adobe Indesign CC,2,0,0,2
+14,Advertising,15,10,0,25
+15,Agency Relationship Management,1,0,0,1
+16,Agile & Waterfall Methodologies,1,0,0,1
+17,Agile Environment,1,0,0,1
+18,Agile Methodologies,19,0,0,19
+19,Agriculture,1,0,0,1
+20,Airlines,1,0,0,1
+21,Algorithm Development,2,0,1,3
+22,Algorithms,77,2,9,88
+23,Alpha Generation,1,0,0,1
+24,Alternative Investment Strategies,1,0,0,1
+25,Alteryx,2,5,6,13
+26,Amazon Dynamodb,1,0,0,1
+27,Amazon RDS,1,0,0,1
+28,Amazon Redshift,2,3,0,5
+29,Amazon Web Services (AWS),25,0,0,25
+30,Americans with Disabilities Act,1,2,0,3
+31,Analytical Chemistry,1,0,1,2
+32,Analytical Modelling,1,0,0,1
+33,Analytical Skills,63,1,1,65
+34,Analytical Solutions,2,0,0,2
+35,Analytics,113,161,107,381
+36,Analyze Information,1,0,0,1
+37,Android,1,5,1,7
+38,Ansible,1,4,0,5
+39,Apache,6,19,9,34
+40,Apache Kafka,5,0,1,6
+41,Apache NiFi,2,0,0,2
+42,Apache Oozie,1,0,0,1
+43,Apache Pig,2,0,0,2
+44,Apache Spark,66,10,4,80
+45,Apache Storm,1,0,0,1
+46,Apache Zeppelin,1,0,0,1
+47,API Development,1,0,0,1
+48,Apparel,2,0,2,4
+49,Application Programming Interfaces,2,0,0,2
+50,Applied Mathematics,4,4,11,19
+51,Arcgis Products,1,0,0,1
+52,Architecting,1,0,0,1
+53,Architectural Design,2,0,0,2
+54,Architecture,5,6,4,15
+55,ArcSight,1,0,2,3
+56,Artifactory,1,0,0,1
+57,Artificial Intelligence (AI),13,0,0,13
+58,Artificial Neural Networks,2,0,0,2
+59,Asset Management,6,11,1,18
+60,Attribution,3,5,4,12
+61,Attribution Modeling,1,0,0,1
+62,Audience Development,1,3,0,4
+63,Audience Measurement,1,2,0,3
+64,Audience Segmentation,1,0,0,1
+65,Auditing,2,0,1,3
+66,Automated Processes,1,0,0,1
+67,Automated Reasoning,1,0,0,1
+68,Automation,1,4,3,8
+69,Automotive,4,0,6,10
+70,Autosys,1,0,0,1
+71,Azure Data Lake,3,0,0,3
+72,Bachelor's Degree,174,3,20,197
+73,Banking,2,8,1,11
+74,Base Pay,1,0,0,1
+75,Bash,1,6,2,9
+76,Bayesian inference,1,1,1,3
+77,BDM,1,0,0,1
+78,Beauty Industry,1,0,0,1
+79,Behavior Change,1,1,0,2
+80,Behavioral Research,1,0,0,1
+81,Big Data,61,32,69,162
+82,Big Data Analytics,6,2,1,9
+83,Bioinformatics,3,4,1,8
+84,Biology,1,3,11,15
+85,Biomedical Engineering,1,0,0,1
+86,Biostatistics,1,0,9,10
+87,Biotechnology,3,0,0,3
+88,Blockchain,2,0,1,3
+89,Blogging,6,0,0,6
+90,BMC Remedy,1,0,0,1
+91,Breaking News,1,0,0,1
+92,Budgeting,4,0,1,5
+93,Business,47,81,73,201
+94,Business-to-Business (B2B),3,0,0,3
+95,Business Analysis,21,1,0,22
+96,Business Analytics,3,3,1,7
+97,Business Architecture,1,0,0,1
+98,Business Development,1,1,5,7
+99,Business Engineering,1,0,0,1
+100,Business Insights,5,0,0,5
+101,Business Intelligence,20,19,19,58
+102,Business Modeling,1,0,0,1
+103,Business Process,15,0,3,18
+104,Business Process Design,1,0,0,1
+105,Business Process Improvement,10,0,1,11
+106,Business Requirements,2,0,0,2
+107,Business Strategy,19,2,0,21
+108,Business Systems,1,0,0,1
+109,Business Transformation,1,0,0,1
+110,Business Units,1,1,1,3
+111,Business Value,1,0,0,1
+112,C,2,2159,1956,4117
+113,C-Level,1,0,1,2
+114,C#,6,16,8,30
+115,C++,13,2143,1939,4095
+116,Caffe,1,3,8,12
+117,Call Center Administration,1,0,0,1
+118,Campaign Management,1,0,0,1
+119,Capital Markets,2,4,1,7
+120,CareerBuilder,1,0,0,1
+121,Cassandra,1,16,1,18
+122,CCAR,1,0,2,3
+123,Change Management,2,0,2,4
+124,Charles River IMS,1,0,0,1
+125,Chemistry,1,0,2,3
+126,CIOs,1,0,0,1
+127,Cisco Systems Products,1,0,0,1
+128,Claims Management,4,0,0,4
+129,Classifiers,1,0,2,3
+130,Cleansing,2,1,1,4
+131,Clinical Data,1,0,1,2
+132,Clinical Data Management,1,0,1,2
+133,Clinical Development,1,1,6,8
+134,Clinical Monitoring,1,0,0,1
+135,Clinical Research,7,0,0,7
+136,Clinical Trials,2,0,0,2
+137,Cloud Computing,24,1,0,25
+138,Cluster Analysis,3,0,0,3
+139,Coaching,1,0,0,1
+140,Cognos,4,0,2,6
+141,Collateralized Debt Obligation (CDO),1,0,0,1
+142,Commercial,1,4,3,8
+143,Commercial Insurance,2,0,0,2
+144,Commodity Markets,1,0,0,1
+145,Communication,151,27,4,182
+146,Community Outreach,1,2,0,3
+147,Competitive Analysis,1,1,0,2
+148,Competitive Intelligence,1,0,0,1
+149,Computation,1,6,11,18
+150,Computational Modeling,1,0,0,1
+151,Computer Engineering,1,5,3,9
+152,Computer Hardware,4,0,0,4
+153,Computer Information Systems,1,3,2,6
+154,Computer Network Operations,1,0,0,1
+155,Computer Science,8,100,74,182
+156,Computer Security,2,0,0,2
+157,Computer Vision,3,3,2,8
+158,Conceptual Modeling,3,0,0,3
+159,Conditional Formatting,1,0,0,1
+160,Confluence,1,0,0,1
+161,Consolidation,1,0,0,1
+162,Consulting,17,7,2,26
+163,Consumer Behavior,3,1,0,4
+164,Consumer Goods,1,0,0,1
+165,Consumer Insight,1,0,0,1
+166,Consumer Lending,1,0,0,1
+167,Consumer Products,1,2,1,4
+168,Contact Centers,1,0,0,1
+169,Container Shipping,1,0,0,1
+170,Containerization,1,0,0,1
+171,Contextual Research,1,0,0,1
+172,Continuous Improvement,2,0,2,4
+173,Contract-to-hire,1,0,0,1
+174,Contractual Agreements,1,0,0,1
+175,Control Systems Design,2,0,0,2
+176,Core Banking,1,0,0,1
+177,Core Java,1,0,0,1
+178,Corporate Finance,1,0,2,3
+179,Corporate Security,1,0,0,1
+180,Corporate Structure,1,0,0,1
+181,Corrections,1,0,0,1
+182,CPLEX,1,0,1,2
+183,Creative Agency,2,0,0,2
+184,Creative Strategy,1,0,0,1
+185,Creative Writing,1,0,0,1
+186,Credit,3,28,9,40
+187,Credit Risk,2,1,2,5
+188,Credit Scoring,1,0,0,1
+189,Criminal Justice,1,0,0,1
+190,Critical Thinking,6,0,3,9
+191,CRM Databases,1,0,0,1
+192,Cross-functional Team Leadership,23,0,0,23
+193,Current Procedural Terminology (CPT),1,0,0,1
+194,Custom Software Development,1,0,0,1
+195,Customer Acquisition,1,0,0,1
+196,Customer Analysis,1,0,0,1
+197,Customer Data,2,3,0,5
+198,Customer Experience,2,3,0,5
+199,Customer Insight,3,1,0,4
+200,Customer Relationship Management (CRM),4,0,0,4
+201,Customer Retention,8,0,0,8
+202,Customer Service,3,1,4,8
+203,Customer Support,2,0,0,2
+204,D,1,2194,2136,4331
+205,D3.js,2,3,0,5
+206,Dashboard,5,4,3,12
+207,Data-driven Decision Making,1,0,0,1
+208,Data Analysis,149,5,20,174
+209,Data Analytics,10,16,18,44
+210,Data Architecture,1,4,0,5
+211,Data Center,2,6,0,8
+212,Data Cleaning,2,0,0,2
+213,Data Collection,3,1,0,4
+214,Data Conversion,1,0,0,1
+215,Data Engineering,9,12,2,23
+216,Data Entry,5,0,0,5
+217,Data Extraction,3,0,0,3
+218,Data Governance,4,1,1,6
+219,Data Integration,2,0,1,3
+220,Data Maintenance,1,0,0,1
+221,Data Management,7,6,8,21
+222,Data Marts,1,1,0,2
+223,Data Migration,1,0,0,1
+224,Data Mining,45,4,7,56
+225,Data Modeling,17,0,0,17
+226,Data Models,3,0,0,3
+227,Data Presentation,1,0,0,1
+228,Data Processing,2,0,1,3
+229,Data Products,1,3,0,4
+230,Data Profiling,1,0,0,1
+231,Data Quality,6,1,1,8
+232,Data Reconciliation,1,0,0,1
+233,Data Science,167,172,95,434
+234,Data Segmentation,1,0,0,1
+235,Data Streaming,1,0,0,1
+236,Data Structures,3,1,1,5
+237,Data Systems,1,0,0,1
+238,Data Validation,1,0,0,1
+239,Data Visualization,16,3,1,20
+240,Data Warehousing,34,3,2,39
+241,Data Wrangling,1,0,0,1
+242,Database Administration,1,0,1,2
+243,Database Design,5,0,0,5
+244,Database Queries,2,0,0,2
+245,Database Systems,1,0,0,1
+246,Database Testing,1,0,0,1
+247,Databases,39,6,4,49
+248,Datasets,6,0,0,6
+249,DAX,2,1,0,3
+250,Debit Cards,1,0,0,1
+251,Decision Sciences,1,1,0,2
+252,Decision Trees,2,2,6,10
+253,Deep Learning,13,9,18,40
+254,Demand Planning,1,0,0,1
+255,Demand Response,1,0,0,1
+256,Design,5,75,79,159
+257,Design Patterns,1,0,0,1
+258,Design Research,3,0,0,3
+259,DevOps,2,3,0,5
+260,Diabetes,1,1,0,2
+261,Differential Scanning Calorimetry,1,0,0,1
+262,Digital Agency,1,0,0,1
+263,Digital Marketing,10,3,0,13
+264,Digital Media,5,1,0,6
+265,Dimensional Modeling,1,0,0,1
+266,Direct Mail,1,0,0,1
+267,Direct Marketing,3,0,0,3
+268,Direct Response Marketing,1,0,0,1
+269,Disaster Recovery,1,4,0,5
+270,Distributed File System (DFS),1,0,0,1
+271,Distributed Systems,3,1,0,4
+272,Distribution Analysis,2,0,0,2
+273,Diversity & Inclusion,1,3,0,4
+274,Diving,2,0,0,2
+275,Django,2,4,1,7
+276,DMP,2,9,0,11
+277,DNA,1,3,0,4
+278,Docker Products,2,0,0,2
+279,Doctor of Philosophy,33,0,1,34
+280,Documentation,3,2,1,6
+281,Dodd-Frank,1,0,0,1
+282,DoubleClick,1,2,0,3
+283,Drilling,1,0,0,1
+284,Drug Development,1,0,0,1
+285,Drug Discovery,1,0,0,1
+286,Due Diligence,1,0,0,1
+287,Dutch,1,0,0,1
+288,Dynamics,2,0,2,4
+289,E-commerce,16,4,0,20
+290,E-Learning,2,0,0,2
+291,E-procurement,1,0,0,1
+292,Earth Science,1,0,0,1
+293,EASE,1,1,1,3
+294,Eclipse,1,1,0,2
+295,Econometric Modeling,1,0,0,1
+296,Econometrics,5,4,7,16
+297,Economics,34,27,22,83
+298,Economists,2,0,0,2
+299,Editing,3,0,0,3
+300,Education,2,55,62,119
+301,EEG,1,0,0,1
+302,ElasticSearch,1,1,2,4
+303,Electrical Engineering,7,2,4,13
+304,Electronic Medical Record (EMR),5,0,0,5
+305,Electronics,1,0,1,2
+306,Embedded Systems,1,0,0,1
+307,Emergency Services,1,0,0,1
+308,Employee Benefits Design,12,0,0,12
+309,Energy,3,2,2,7
+310,Engineering,34,83,95,212
+311,Engineering Economics,1,0,0,1
+312,Engineers,3,21,2,26
+313,Enterprise Architecture,1,0,0,1
+314,Enterprise Data,2,7,1,10
+315,Enterprise Resource Planning (ERP),3,0,0,3
+316,Enterprise Software,19,0,0,19
+317,Entertainment,1,8,0,9
+318,Entrepreneurship,3,0,0,3
+319,Epidemiology,1,0,0,1
+320,Equities,5,7,1,13
+321,Erwin,1,0,0,1
+322,ETL Testing,1,0,0,1
+323,ETL Tools,2,0,0,2
+324,Event Management,1,0,0,1
+325,Excel Pivot,1,0,0,1
+326,Executive Team,1,0,0,1
+327,Experimental Design,3,0,4,7
+328,"Extract, Transform, Load (ETL)",23,0,0,23
+329,Facebook,1,15,8,24
+330,Facility Management (FM),1,0,0,1
+331,FactSet,1,7,0,8
+332,Fashion,4,0,0,4
+333,Fast-Moving Consumer Goods (FMCG),3,0,0,3
+334,Fast Data,1,0,0,1
+335,Feasibility Studies,1,0,0,1
+336,Feature Extraction,1,0,0,1
+337,Finance,13,23,72,108
+338,Financial Analysis,4,0,5,9
+339,Financial Intelligence,1,0,0,1
+340,Financial Markets,3,0,0,3
+341,Financial Modeling,1,0,6,7
+342,Financial Reporting,2,0,3,5
+343,Financial Risk,1,0,1,2
+344,Financial Services,5,8,8,21
+345,Financial Systems,1,0,2,3
+346,FinTech,1,6,0,7
+347,Fitness,1,0,1,2
+348,Fixed Income,2,4,1,7
+349,Fleets,1,0,0,1
+350,Food & Beverage,3,0,0,3
+351,Food Processing,1,0,0,1
+352,Forecasting,22,4,3,29
+353,Frame,1,5,5,11
+354,Fraud Investigations,1,0,0,1
+355,French,1,3,0,4
+356,Functional Programming,1,1,0,2
+357,Functionality,1,0,0,1
+358,Fundamental Analysis,2,0,0,2
+359,Future Trends,1,0,0,1
+360,Gamification,1,0,0,1
+361,Gaming,1,1,0,2
+362,Gas,1,0,0,1
+363,Gas Chromatography,2,0,0,2
+364,Genetics,2,0,3,5
+365,Geographic Information Systems (GIS),2,0,0,2
+366,Geospatial Data,2,0,0,2
+367,Git,4,15,10,29
+368,Github,1,7,4,12
+369,Global Delivery,1,0,0,1
+370,Global Teams,1,0,0,1
+371,GMP,1,0,2,3
+372,Go,1,118,58,177
+373,Go-to-market Strategy,1,0,0,1
+374,Good Clinical Practice (GCP),2,0,0,2
+375,Google Adwords,2,0,0,2
+376,Google Analytics,12,10,9,31
+377,Google BigQuery,1,2,0,3
+378,Google Cloud Platform (GCP),1,0,0,1
+379,Government,2,0,12,14
+380,Graphic Design,1,0,0,1
+381,Graphic Presentations,1,0,0,1
+382,Graphics,2,0,1,3
+383,Graphing,1,1,0,2
+384,Growth Strategies,1,0,0,1
+385,Hadoop,37,89,85,211
+386,Handle Multiple Projects,1,0,0,1
+387,HBase,3,7,1,11
+388,HDF5,1,0,0,1
+389,Healthcare,28,20,15,63
+390,Healthcare Analytics,2,2,0,4
+391,Healthcare Industry,2,0,0,2
+392,Healthcare Information Technology (HIT),2,0,0,2
+393,Hedge Funds,3,1,0,4
+394,High-Performance Liquid Chromatography (HPLC),1,0,0,1
+395,Higher Education,8,0,0,8
+396,Hiring,1,2,1,4
+397,Hive,12,44,40,96
+398,HL7 Standards,1,0,0,1
+399,HP Quality Center,1,0,0,1
+400,HTML,4,7,0,11
+401,Human Resources,1,8,4,13
+402,Hydraulics,1,0,0,1
+403,IEEE,1,0,0,1
+404,Image Editing,3,0,0,3
+405,Import,3,1,0,4
+406,Indexing,1,0,0,1
+407,Inductive Output Tube (IOT),2,0,0,2
+408,Industrial Engineering,1,1,10,12
+409,Industrial Safety,1,0,0,1
+410,Informatica,4,5,3,12
+411,Informatics,2,4,5,11
+412,Information Extraction,1,0,0,1
+413,Information Security,2,0,2,4
+414,Information Technology,9,10,21,40
+415,Infotainment,1,0,0,1
+416,Instrumentation,2,0,0,2
+417,Insurance,8,22,22,52
+418,Integrated Development Environments,1,0,0,1
+419,Integration,3,6,6,15
+420,Intelligence,4,37,72,113
+421,Internal Audit,3,0,0,3
+422,International Marketing,1,0,0,1
+423,Internet of Things (IoT),2,0,0,2
+424,Internet Protocol Suite (TCP/IP),1,0,0,1
+425,Interviewing,3,0,0,3
+426,Investigative Research,1,0,0,1
+427,Investment Banking,1,3,0,4
+428,Investment Properties,1,0,0,1
+429,Investment Strategies,1,0,0,1
+430,Investments,7,10,1,18
+431,iOS,1,4,1,6
+432,IPO,1,0,0,1
+433,IPv6,1,0,0,1
+434,Java,32,83,72,187
+435,Java Enterprise Edition,1,0,0,1
+436,JavaScript,3,11,9,23
+437,JIRA,2,0,1,3
+438,jQuery,1,1,2,4
+439,Julia,1,5,1,7
+440,Keras,1,6,8,15
+441,Key Performance Indicators,1,0,1,2
+442,Kibana,1,0,1,2
+443,Knowledge Management,2,0,0,2
+444,Knowledge Representation,1,0,0,1
+445,KPI Dashboards,2,0,0,2
+446,Laboratory Skills,1,0,0,1
+447,Lake,1,2,8,11
+448,Law,2,12,5,19
+449,Leadership,77,16,3,96
+450,Lean Manufacturing,2,0,0,2
+451,Lean Six Sigma,1,0,2,3
+452,Learning Management Systems,1,0,0,1
+453,Legal Advice,1,0,0,1
+454,Legal Liability,1,0,0,1
+455,Leisure Industry,1,0,0,1
+456,Life Sciences,4,0,2,6
+457,Linear Algebra,1,0,0,1
+458,Linear Regression,1,1,2,4
+459,Linux,5,19,14,38
+460,Loan Origination,1,0,0,1
+461,Loans,2,0,0,2
+462,Logical Data Modeling,1,0,0,1
+463,Logistic Regression,3,1,5,9
+464,Logistics Management,8,0,0,8
+465,Logstash,2,0,0,2
+466,Loyalty Programs,1,0,0,1
+467,Machine Learning,164,71,96,331
+468,Magazines,1,0,0,1
+469,Managed Care,2,0,3,5
+470,Management,107,83,55,245
+471,Management Consulting,3,1,0,4
+472,Management Information Systems (MIS),1,0,0,1
+473,Management System,1,0,0,1
+474,MANOVA,1,0,0,1
+475,Manuals,1,1,1,3
+476,Manufacturing,4,1,8,13
+477,MapReduce,3,10,14,27
+478,Market Analysis,4,0,0,4
+479,Market Data,3,12,0,15
+480,Market Intelligence,2,1,0,3
+481,Market Research,6,4,0,10
+482,Marketing,33,78,27,138
+483,Marketing Analytics,4,3,2,9
+484,Marketing Management,1,1,0,2
+485,Marketing Mix,1,2,0,3
+486,Marketing Mix Modeling,1,2,0,3
+487,Marketing Science,1,2,0,3
+488,Marketing Strategy,3,0,0,3
+489,Marketo,1,0,0,1
+490,Master's Degree,187,4,12,203
+491,Master Data,3,0,0,3
+492,Master Data Management,2,0,0,2
+493,Materials,1,0,2,3
+494,Mathematical Modeling,1,0,0,1
+495,Mathematics,3,42,76,121
+496,Matlab,26,14,12,52
+497,Matplotlib,1,4,1,6
+498,Media Buying,1,0,0,1
+499,Media Planning,1,0,0,1
+500,Media Research,1,0,0,1
+501,Medicaid,1,0,8,9
+502,Medical Devices,1,0,0,1
+503,Medical Statistics,1,0,0,1
+504,Medicare,1,0,11,12
+505,Medicine,6,5,10,21
+506,Merchandising,2,1,0,3
+507,Merchant Services,1,0,0,1
+508,Mergers & Acquisitions (M&A),7,0,0,7
+509,Meridian,1,0,0,1
+510,Metadata,3,0,1,4
+511,Microservices,1,0,0,1
+512,Microsoft Access,12,0,4,16
+513,Microsoft Azure,5,1,0,6
+514,Microsoft Azure Machine Learning,2,0,0,2
+515,Microsoft Dynamics AX,1,0,0,1
+516,Microsoft Excel,40,9,18,67
+517,Microsoft Office,7,20,17,44
+518,Microsoft Outlook,2,0,0,2
+519,Microsoft Power BI,8,0,2,10
+520,Microsoft PowerApps,1,0,0,1
+521,Microsoft PowerPoint,2,1,2,5
+522,Microsoft Products,1,0,0,1
+523,Microsoft Project,1,0,0,1
+524,Microsoft SQL Server,18,1,1,20
+525,Microsoft Word,1,1,3,5
+526,MicroStrategy,2,1,10,13
+527,Mining,9,5,7,21
+528,Minitab,1,2,2,5
+529,ML,7,53,47,107
+530,MLP,1,0,0,1
+531,Mobile Advertising,1,0,0,1
+532,Mobile Applications,2,0,0,2
+533,Mobile Data,1,0,0,1
+534,Mobile Devices,4,0,0,4
+535,Model Design,1,0,0,1
+536,Modeling,6,12,16,34
+537,MongoDB,4,11,5,20
+538,Monte Carlo Simulation,1,0,0,1
+539,MS Reporting Services,1,0,0,1
+540,Multimedia,1,0,0,1
+541,Multivariate Statistics,1,0,0,1
+542,Music,1,8,0,9
+543,Mutual Funds,1,0,0,1
+544,MySQL,13,11,7,31
+545,National Security,2,0,1,3
+546,Natural Language Generation,1,0,0,1
+547,Natural Language Processing (NLP),14,0,0,14
+548,Natural Language Understanding,1,0,0,1
+549,Neo4j,2,1,0,3
+550,NetSuite,1,0,0,1
+551,Network Administration,1,0,0,1
+552,Network Marketing,1,0,0,1
+553,Network Security,2,0,0,2
+554,Networking,3,2,0,5
+555,Neural Networks,3,4,12,19
+556,Neuro-Linguistic Programming (NLP),15,0,0,15
+557,Neurology,1,0,0,1
+558,Neuroscience,1,0,1,2
+559,New Store Openings,1,0,0,1
+560,Newsletters,1,0,0,1
+561,Node.js,2,1,1,4
+562,Non-IT,1,0,0,1
+563,Nonprofit Organizations,3,0,0,3
+564,NoSQL,7,22,15,44
+565,Numerical Analysis,1,0,0,1
+566,NumPy,4,7,10,21
+567,Nutrition,2,1,0,3
+568,Object-Oriented Programming (OOP),1,0,0,1
+569,Object Detection,1,0,0,1
+570,Object Oriented Design,1,0,0,1
+571,Offshore,1,0,0,1
+572,Oil & Gas,1,0,0,1
+573,Oil & Gas Industry,2,0,0,2
+574,OLAP,2,1,2,5
+575,Omniture,1,6,1,8
+576,Onboarding,1,0,0,1
+577,Oncology,2,1,2,5
+578,Online Marketing,1,0,0,1
+579,Online Research,1,0,0,1
+580,Ontologies,1,0,0,1
+581,Open Source Software,2,0,0,2
+582,Operational Efficiency,1,0,0,1
+583,Operational Excellence,1,0,0,1
+584,Operations Research,4,10,25,39
+585,Opinion Polling,1,0,0,1
+586,Optimization,4,7,11,22
+587,Optimization Models,1,0,1,2
+588,Optimization Techniques,1,0,0,1
+589,Oracle Applications,1,0,0,1
+590,Oracle Database,3,0,2,5
+591,Oracle OLAP,2,0,0,2
+592,Oracle SQL Developer,2,0,0,2
+593,Organization Skills,1,0,0,1
+594,Pandas (Software),7,0,0,7
+595,Parallel Computing,1,0,0,1
+596,Party Planning,1,0,0,1
+597,Patent Law,1,0,0,1
+598,Pattern,1,0,1,2
+599,Pay Per Click (PPC),1,0,0,1
+600,Payments,1,0,4,5
+601,PDCA Cycle,1,0,0,1
+602,Pegasystems PRPC,1,0,0,1
+603,Performance Dashboards,1,0,0,1
+604,Performance Improvement,1,0,1,2
+605,Performance Management,2,0,0,2
+606,Performing,1,0,4,5
+607,Perl,1,8,5,14
+608,Petroleum,1,0,0,1
+609,Pharmaceutical Industry,4,0,0,4
+610,Pharmaceutics,1,0,0,1
+611,Philosophy,1,0,1,2
+612,PHP,3,5,1,9
+613,Physics,8,10,20,38
+614,Pipelines,3,0,4,7
+615,PL/SQL,3,0,2,5
+616,Plantation,1,0,0,1
+617,Political Science,1,0,0,1
+618,Politics,1,0,0,1
+619,Polyglot,1,0,0,1
+620,Portfolio Management,3,2,0,5
+621,Post-Sales,1,0,0,1
+622,PostgreSQL,4,5,1,10
+623,Power Plants,1,0,0,1
+624,Powertrain,2,0,0,2
+625,Pre-IPO,2,0,0,2
+626,Pre-sales,5,0,0,5
+627,Pre-Sales Consulting,1,0,0,1
+628,Pre/Post Sales Engineers,1,0,0,1
+629,Prediction,2,0,1,3
+630,Predictive Analytics,11,7,6,24
+631,Predictive Modeling,14,2,3,19
+632,Pricing Strategy,6,0,0,6
+633,Primary Research,1,0,0,1
+634,Private Equity,1,1,0,2
+635,Private Label,1,0,0,1
+636,Problem Solving,38,2,0,40
+637,Process Design,1,0,1,2
+638,Process Optimization,1,0,1,2
+639,Processes Development,1,0,0,1
+640,Procurement,1,0,0,1
+641,Product Development,3,1,3,7
+642,Product Engineering,1,0,0,1
+643,Product Information Management,1,0,0,1
+644,Product Management,5,6,0,11
+645,Product Marketing,1,0,0,1
+646,Product R&D,1,0,0,1
+647,Product Service,1,0,0,1
+648,Production Planning,1,0,0,1
+649,Professional Services,2,0,5,7
+650,Program Direction,1,0,0,1
+651,Program Management,6,0,3,9
+652,Programmatic Media Buying,1,0,0,1
+653,Programming,21,14,19,54
+654,Project Bidding,1,0,0,1
+655,Project Coordination,2,0,0,2
+656,Project Delivery,2,0,0,2
+657,Project Estimation,2,0,0,2
+658,Project Implementation,1,0,0,1
+659,Project Management,8,4,5,17
+660,Project Planning,1,0,0,1
+661,Proof of Concept,1,1,0,2
+662,Proofreading,1,0,0,1
+663,Property & Casualty Insurance,2,0,0,2
+664,Proprietary Trading,1,0,0,1
+665,Protocol Design,1,0,0,1
+666,Prototyping,2,1,0,3
+667,PTO,1,4,10,15
+668,Public Health,1,0,0,1
+669,Public Policy,19,2,0,21
+670,Public Safety,1,2,0,3
+671,Public Sector,1,0,3,4
+672,Public Speaking,1,2,0,3
+673,PySpark,3,3,1,7
+674,Python,249,268,196,713
+675,PyTorch,1,4,5,10
+676,QlikView,1,0,2,3
+677,Qualitative Research,5,0,0,5
+678,Quality Assurance,5,1,1,7
+679,Quantitative Analytics,5,0,0,5
+680,Quantitative Finance,2,1,0,3
+681,Quantitative Investing,2,0,0,2
+682,Quantitative Research,5,0,0,5
+683,Query Analyzer,3,0,0,3
+684,Questionnaire Design,1,0,0,1
+685,R,59,1660,1603,3322
+686,Radio,1,5,0,6
+687,Rally,1,0,0,1
+688,Rapid Prototyping,1,1,0,2
+689,Real Estate Economics,1,0,0,1
+690,Real Estate Transactions,2,0,0,2
+691,Recommender Systems,1,2,2,5
+692,Recruiting,3,4,1,8
+693,Regression Analysis,1,0,0,1
+694,Regression Testing,8,0,0,8
+695,Regular Expressions,1,0,0,1
+696,Regulatory Reporting,1,1,0,2
+697,Reinforcement Learning,2,2,2,6
+698,Relational Data Modeling,1,0,0,1
+699,Relocation,1,4,1,6
+700,Renewable Energy,2,0,0,2
+701,Report Writing,7,0,0,7
+702,Reporting,1,18,11,30
+703,Reporting & Analysis,4,0,3,7
+704,Requirements Analysis,4,0,0,4
+705,Requirements Gathering,5,0,0,5
+706,Research,36,174,85,295
+707,Research and Development (R&D),6,0,0,6
+708,Residential Mortgages,1,0,0,1
+709,Resolutions,1,0,0,1
+710,RESTful WebServices,1,0,0,1
+711,Retail,7,6,5,18
+712,Retirement Planning,3,0,0,3
+713,Return on Investment,1,0,2,3
+714,Revenue Analysis,1,0,1,2
+715,Risk Assessment,1,0,0,1
+716,Robotic Process Automation (RPA),1,0,0,1
+717,Root Cause Analysis,2,1,0,3
+718,Rules Engines,1,1,0,2
+719,Sales,15,34,18,67
+720,Sales Engineering,1,0,0,1
+721,Sales Operations,3,0,1,4
+722,Salesforce.com,7,0,1,8
+723,SAP BusinessObjects,1,0,0,1
+724,SAP ERP,1,0,0,1
+725,SAP FICO,1,0,0,1
+726,SAP HANA,1,0,1,2
+727,SAP Products,1,0,0,1
+728,SAP Retail,1,0,0,1
+729,SAS,14,63,137,214
+730,SAS Certified Base Programmer,1,0,0,1
+731,SAS E-Miner,1,0,0,1
+732,SAS Programming,3,0,0,3
+733,Scala,18,48,25,91
+734,Scalability,1,0,0,1
+735,Science,22,301,201,524
+736,Scientific Data Management,1,0,0,1
+737,Scientists,5,33,23,61
+738,Scikit-Learn,2,4,3,9
+739,SciPy,1,4,6,11
+740,Scripting,1,3,1,5
+741,Scrum,5,6,1,12
+742,Search,1,11,11,23
+743,Search Engine Marketing (SEM),1,0,0,1
+744,Secondary Education,1,0,0,1
+745,Security,4,4,34,42
+746,Segmentation,7,2,0,9
+747,Selenium,1,0,1,2
+748,Sellers,1,0,0,1
+749,Sensors,2,0,0,2
+750,Service-Oriented Architecture (SOA),1,0,0,1
+751,Service Delivery,1,3,0,4
+752,SharePoint,1,0,6,7
+753,Shell Scripting,6,0,0,6
+754,SIGINT,1,0,3,4
+755,Signal Processing,4,0,2,6
+756,Simulations,6,0,0,6
+757,Simulink,1,0,2,3
+758,Site Reliability Engineering,1,0,0,1
+759,Six Sigma,1,0,8,9
+760,Slack,1,9,0,10
+761,Smart Grid,1,0,0,1
+762,Social Media,2,2,0,4
+763,Social Services,1,3,0,4
+764,Sociology,1,0,0,1
+765,Software,5,12,17,34
+766,Software as a Service (SaaS),8,0,0,8
+767,Software Design,2,0,0,2
+768,Software Development,12,2,3,17
+769,Software Development Life Cycle (SDLC),12,0,0,12
+770,Software Engineers,1,0,0,1
+771,Software Project Management,1,0,0,1
+772,Solar Energy,1,0,0,1
+773,Solar Power,1,0,0,1
+774,Solr,1,3,2,6
+775,Solution Architecture,6,0,0,6
+776,Solution Building,1,0,0,1
+777,Solution Selling,2,0,0,2
+778,Sourcing,2,3,0,5
+779,Spark,1,112,75,188
+780,Spatial Analysis,1,0,0,1
+781,Special Assignments,1,0,0,1
+782,Sponsorship,1,5,1,7
+783,Sports,1,8,1,10
+784,Spotfire,2,2,2,6
+785,Spreadsheets,1,0,0,1
+786,Spring Framework,2,0,0,2
+787,SPSS,15,26,18,59
+788,SQL,132,256,169,557
+789,SQL Server Analysis Services (SSAS),1,0,0,1
+790,SQL Server Integration Services (SSIS),2,0,0,2
+791,SQL Server Management Studio,1,0,1,2
+792,SQL Server Reporting Services (SSRS),3,0,0,3
+793,Sqoop,2,0,0,2
+794,Stage Management,1,0,0,1
+795,Start-ups,29,0,0,29
+796,Stata,2,9,7,18
+797,Statements of Work (SOW),1,0,0,1
+798,Statistical Analysis Tools,2,0,0,2
+799,Statistical Concepts,1,0,0,1
+800,Statistical Data Analysis,15,0,0,15
+801,Statistical Modeling,25,0,1,26
+802,Statistics,201,59,97,357
+803,Stochastic Methods,1,0,0,1
+804,Storytelling,3,0,0,3
+805,STPI,1,0,0,1
+806,Strategic Analytics,1,0,0,1
+807,Strategic Communications,1,0,0,1
+808,Strategic Insights,1,0,0,1
+809,Strategic Partnerships,1,0,1,2
+810,Strategic Planning,4,0,0,4
+811,Strategic Sourcing,1,0,0,1
+812,Strategic Thinking,1,1,0,2
+813,Strategy,15,31,15,61
+814,Streams,1,0,0,1
+815,Supply Chain Management,9,0,0,9
+816,Supply Chain Optimization,2,0,0,2
+817,Support Vector Machine (SVM),1,0,0,1
+818,Surveillance,1,2,0,3
+819,Survey Design,2,0,0,2
+820,Survey Research,1,0,0,1
+821,Suspension,1,0,0,1
+822,Swish,1,0,0,1
+823,System Deployment,1,0,0,1
+824,System Monitoring,1,0,0,1
+825,Systems Analysis,2,0,0,2
+826,Systems Biology,1,0,0,1
+827,Systems Engineering,1,2,1,4
+828,Tableau,30,45,43,118
+829,Talend,1,4,1,6
+830,Talent Intelligence,1,0,0,1
+831,Targeted Advertising,2,0,0,2
+832,Team Management,3,0,0,3
+833,Teamwork,4,7,4,15
+834,Technical Leadership,1,0,0,1
+835,Technical Subject Matter,1,0,0,1
+836,Technical Writing,2,0,0,2
+837,Technology Roadmapping,1,0,0,1
+838,Telecommunications,1,1,1,3
+839,Telematics,2,0,0,2
+840,Television,4,2,0,6
+841,Temporary Placement,1,0,0,1
+842,TensorFlow,11,7,15,33
+843,Teradata,4,4,11,19
+844,Terminology,2,0,0,2
+845,Test Automation,1,0,0,1
+846,Test Cases,1,0,0,1
+847,Test Planning,1,0,0,1
+848,Test Scenarios,1,0,0,1
+849,Test Strategy,1,0,0,1
+850,Testing,35,8,0,43
+851,Text Analytics,1,0,1,2
+852,Theme Parks,1,0,0,1
+853,Time Management,1,2,0,3
+854,Time Series Analysis,4,0,2,6
+855,Titles,1,0,0,1
+856,Trade Marketing,1,0,0,1
+857,Traders,1,0,0,1
+858,Trading,1,11,0,12
+859,Trading Desk,1,3,0,4
+860,Trading Strategies,1,0,0,1
+861,Training,7,5,4,16
+862,Training Documentation,1,0,0,1
+863,Training Manuals,1,0,1,2
+864,Transact-SQL (T-SQL),2,0,0,2
+865,Transactional,1,1,0,2
+866,Translation,5,2,1,8
+867,Travel,1,16,7,24
+868,Troubleshooting,4,0,2,6
+869,TS,1,24,71,96
+870,U.S. Department of Defense,2,0,0,2
+871,U.S. Food and Drug Administration (FDA),1,0,0,1
+872,Underwriting,2,4,1,7
+873,Unified Modeling Language (UML),1,0,0,1
+874,Unix,6,4,6,16
+875,Unstructured Data,2,1,0,3
+876,Upstream,1,0,0,1
+877,Use Case,1,0,0,1
+878,User Acceptance Testing,1,0,0,1
+879,User Experience (UX),2,0,0,2
+880,Validation,1,1,1,3
+881,Valuation,2,2,1,5
+882,Value Creation,1,0,0,1
+883,Vendor Management,2,2,0,4
+884,Video,2,3,1,6
+885,Video Analytics,2,0,0,2
+886,Video Games,2,0,0,2
+887,Virtualization,2,3,0,5
+888,Visio,3,10,19,32
+889,Visual Basic,2,1,3,6
+890,Visual Basic for Applications (VBA),7,0,0,7
+891,Visualization,8,8,5,21
+892,W2,2,2,10,14
+893,Water Resource Management,1,0,0,1
+894,Wealth Management,1,2,0,3
+895,Web Analytics,8,0,0,8
+896,Web Applications,3,0,0,3
+897,Web Content Writing,1,0,0,1
+898,Web Crawling,1,0,0,1
+899,Web Development,1,1,0,2
+900,Web Services,13,4,1,18
+901,Web Services API,1,0,0,1
+902,Weka,1,3,4,8
+903,Wireless Technologies,1,0,0,1
+904,WMA,1,0,0,1
+905,Workers Compensation,1,1,0,2
+906,Workflow Management,1,0,0,1
+907,Workforce Management,1,0,0,1
+908,Working Experience,1,0,0,1
+909,Working with Investors,1,0,0,1
+910,Writing,16,10,0,26
+911,XML,8,5,2,15
+912,ZoomInfo,1,0,0,1
