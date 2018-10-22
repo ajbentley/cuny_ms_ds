@@ -1,0 +1,221 @@
+---
+title: "Job Scraper"
+author: "AJ Bentley"
+date: "10/17/2018"
+output:
+  html_document:
+    theme: sandstone
+    highlight: espresso
+  
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+library(rvest)
+library(stringr)
+library(plyr)
+library(dplyr)
+library(ngram)
+```
+
+## Overview
+
+In this project I'll be scraping a job hosting website to glean information that can be used to determine what the most valuable skills are in Data Science.
+
+I had previously pursued setting up an API with Upwork to get data there, but it didn't pan out as their API is set to benefit those hiring, not those seeking work.
+
+#### Finding the data
+
+```{r load first page}
+
+# linking to the careerbuilder site with "Data Science" having been filled into the keyword space on the initial space.
+
+careerbuilder <- read_html("https://www.careerbuilder.com/jobs-data-science?keywords=Data+Science&location=")
+
+careerbuilder
+```
+
+
+```{r read text}
+
+job_titles <- html_nodes(careerbuilder, ".show-for-medium-up a")
+
+job1 <- job_titles[1]
+
+cat(str_wrap(job1, width = 50))
+
+```
+
+
+```{r gather job links page 1}
+
+# get urls
+urls <- careerbuilder %>% 
+  html_nodes(".show-for-medium-up a") %>%         # get the CSS nodes
+  html_attr("href")                               # extract the URLs
+
+# get job titles
+links <- careerbuilder %>% 
+  html_nodes(".show-for-medium-up a") %>%         # get the CSS nodes
+  html_text()                                     # extract the job name
+
+# Combine `links` and `urls` into a data.frame
+jb <- data.frame(links = links, urls = urls, stringsAsFactors = FALSE)
+head(jb)
+
+
+```
+
+
+
+```{r gather job links on remaining pages}
+
+pages <- seq(2,12)
+
+cbp <- sprintf("https://www.careerbuilder.com/jobs-data-science?page_number=%s",pages)
+
+for(i in seq(nrow(cbp))) {
+  urls <- read_html(cbp[i]) %>%       # read a page
+    html_nodes(".show-for-medium-up a") %>% 
+    html_attr("href") 
+    links <- urls %>% html_nodes(".show-for-medium-up a") %>% html_text()
+    jb <- bind_rows(jb, (data.frame(links = links, urls = urls, stringsAsFactors = FALSE)))
+    }
+
+head(jb)
+
+```
+
+
+I know there are more elegant ways to do what's below but operational efficiencies require that I focus my resources elsewhere.
+
+
+```{r orig gather}
+cb <- read_html("https://www.careerbuilder.com/jobs-data-science?page_number=2")
+urls <- cb %>% html_nodes(".show-for-medium-up a") %>% html_attr("href") 
+links <- cb %>% html_nodes(".show-for-medium-up a") %>% html_text()
+nj <- data.frame(links = links, urls = urls, stringsAsFactors = FALSE)
+jb <- rbind(jb, nj)
+
+cb <- read_html("https://www.careerbuilder.com/jobs-data-science?page_number=3")
+urls <- cb %>% html_nodes(".show-for-medium-up a") %>% html_attr("href") 
+links <- cb %>% html_nodes(".show-for-medium-up a") %>% html_text()
+nj <- data.frame(links = links, urls = urls, stringsAsFactors = FALSE)
+jb <- rbind(jb, nj)
+
+cb <- read_html("https://www.careerbuilder.com/jobs-data-science?page_number=4")
+urls <- cb %>% html_nodes(".show-for-medium-up a") %>% html_attr("href") 
+links <- cb %>% html_nodes(".show-for-medium-up a") %>% html_text()
+nj <- data.frame(links = links, urls = urls, stringsAsFactors = FALSE)
+jb <- rbind(jb, nj)
+
+cb <- read_html("https://www.careerbuilder.com/jobs-data-science?page_number=5")
+urls <- cb %>% html_nodes(".show-for-medium-up a") %>% html_attr("href") 
+links <- cb %>% html_nodes(".show-for-medium-up a") %>% html_text()
+nj <- data.frame(links = links, urls = urls, stringsAsFactors = FALSE)
+jb <- rbind(jb, nj)
+
+cb <- read_html("https://www.careerbuilder.com/jobs-data-science?page_number=6")
+urls <- cb %>% html_nodes(".show-for-medium-up a") %>% html_attr("href") 
+links <- cb %>% html_nodes(".show-for-medium-up a") %>% html_text()
+nj <- data.frame(links = links, urls = urls, stringsAsFactors = FALSE)
+jb <- rbind(jb, nj)
+
+cb <- read_html("https://www.careerbuilder.com/jobs-data-science?page_number=7")
+urls <- cb %>% html_nodes(".show-for-medium-up a") %>% html_attr("href") 
+links <- cb %>% html_nodes(".show-for-medium-up a") %>% html_text()
+nj <- data.frame(links = links, urls = urls, stringsAsFactors = FALSE)
+jb <- rbind(jb, nj)
+
+cb <- read_html("https://www.careerbuilder.com/jobs-data-science?page_number=8")
+urls <- cb %>% html_nodes(".show-for-medium-up a") %>% html_attr("href") 
+links <- cb %>% html_nodes(".show-for-medium-up a") %>% html_text()
+nj <- data.frame(links = links, urls = urls, stringsAsFactors = FALSE)
+jb <- rbind(jb, nj)
+
+cb <- read_html("https://www.careerbuilder.com/jobs-data-science?page_number=9")
+urls <- cb %>% html_nodes(".show-for-medium-up a") %>% html_attr("href") 
+links <- cb %>% html_nodes(".show-for-medium-up a") %>% html_text()
+nj <- data.frame(links = links, urls = urls, stringsAsFactors = FALSE)
+jb <- rbind(jb, nj)
+
+cb <- read_html("https://www.careerbuilder.com/jobs-data-science?page_number=10")
+urls <- cb %>% html_nodes(".show-for-medium-up a") %>% html_attr("href") 
+links <- cb %>% html_nodes(".show-for-medium-up a") %>% html_text()
+nj <- data.frame(links = links, urls = urls, stringsAsFactors = FALSE)
+jb <- rbind(jb, nj)
+
+cb <- read_html("https://www.careerbuilder.com/jobs-data-science?page_number=11")
+urls <- cb %>% html_nodes(".show-for-medium-up a") %>% html_attr("href") 
+links <- cb %>% html_nodes(".show-for-medium-up a") %>% html_text()
+nj <- data.frame(links = links, urls = urls, stringsAsFactors = FALSE)
+jb <- rbind(jb, nj)
+
+cb <- read_html("https://www.careerbuilder.com/jobs-data-science?page_number=12")
+urls <- cb %>% html_nodes(".show-for-medium-up a") %>% html_attr("href") 
+links <- cb %>% html_nodes(".show-for-medium-up a") %>% html_text()
+nj <- data.frame(links = links, urls = urls, stringsAsFactors = FALSE)
+jb <- rbind(jb, nj)
+
+```
+
+```{r set up job bank df}
+jb
+jobbank <- jb
+
+jobbank$url <- paste0("http://www.careerbuilder.com",jobbank$urls)
+jobbank <- data.frame(jobbank$links,jobbank$url, stringsAsFactors = FALSE)
+colnames(jobbank) <- c("Job Title", "urls")
+
+head(jobbank)
+
+```
+
+Used SelectorGadget to find relevant items:
+node  .description p
+xpath=//*[contains(concat( " ", @class, " " ), concat( " ", "description", " " ))]//p
+
+Now I'll loop through each url in the jobbank dataframe and pull the text under these nodes
+
+```{r collect job details}
+
+description <- data.frame("job_id"=seq(1,nrow(jobbank)), jobbank$`Job Title`,"job_desc1" = seq(1,nrow(jobbank)), "job_ind" = seq(1,nrow(jobbank)), jobbank$urls, stringsAsFactors = FALSE)
+
+for(i in seq(nrow(jobbank))) {
+
+  description$job_desc1[i] <- read_html(jobbank$urls[i]) %>%       # read a page
+    html_nodes(".columns.item") %>%                                # find the text
+    html_text()  
+
+    description$job_ind[i] <- read_html(jobbank$urls[i]) %>%   
+    html_nodes("#job-industry") %>%                                # job industry
+    html_text()               
+            
+}    
+```
+
+
+```{r clean text}
+
+# remove "\nJob Description\n\" from the front of each line in job_desc1 and the \ns at the end of each line
+
+description$jobdesc <- str_sub(description$job_desc1, 19L, -3L)
+
+# remove "\n" from front and back of each line of industry
+
+description$industry <- str_sub(description$job_ind, 2L, -2L)
+
+jobdf <- select(description, "job_id", "jobbank..Job.Title.", "industry", "jobdesc")  # create a new DF
+
+head(jobdf)
+
+```
+
+
+```{r SAVE THAT FILE!!!}
+
+write.csv(jobdf, file = "careerbuilder.csv")
+
+```
+
