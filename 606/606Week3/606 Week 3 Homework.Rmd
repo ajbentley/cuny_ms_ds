@@ -1,0 +1,370 @@
+---
+title: "606 Homework Week 3"
+author: "AJ Bentley"
+date: "9/25/2018"
+output:
+  html_document:
+    theme: cerulean
+    highlight: pygments
+
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+require(DATA606)
+```
+
+#### 3.2 Area under the curve, Part II. 
+__What percent of a standard normal distribution N(μ =0, sd = 1) is found in each region? Be sure to draw a graph.__
+
+```{r auc a, echo=FALSE, message=FALSE, warning=FALSE}
+Z <- -1.13
+
+p <- 1-pnorm(Z,0,1)
+
+pp <- format(round(p*100, 2), nsmall = 2)
+
+cat("a. ", pp, "%  of a standard distribution is in Z >", Z)
+
+normalPlot(0,1,bounds = c(Z,4), tails = FALSE)
+
+```
+
+
+```{r auc b, echo=FALSE, message=FALSE, warning=FALSE}
+Z <- 0.18
+
+p <- pnorm(Z,0,1)
+
+pp <- format(round(p*100, 2), nsmall = 2)
+
+cat("b. ", pp, "%  of a standard distribution is in Z <", Z)
+
+normalPlot(0,1,bounds = c(-4,Z), tails = FALSE)
+
+```
+
+```{r auc c, echo=FALSE, message=FALSE, warning=FALSE}
+Z <- 8
+
+p <- 1-pnorm(Z,0,1)
+
+pp <- format(round(p*100, 2), nsmall = 2)
+
+cat("c. ", pp, "% of a standard distribution is in Z >", Z)
+
+normalPlot(0,1,bounds = c(Z,4), tails = FALSE)
+
+```
+
+
+```{r auc d, echo=FALSE, message=FALSE, warning=FALSE}
+Z <- .5
+
+p <- 1-pnorm(Z,0,1)
+
+pp <- format(round(p*100, 2), nsmall = 2)
+
+cat("d. ", pp, "% of a standard distribution is in |Z| <", Z)
+
+normalPlot(0,1,bounds = c(-.5,.5), tails = FALSE)
+
+```
+
+<br>
+
+
+#### 3.4 Triathlon times, Part I. 
+
+__In triathlons, it is common for racers to be placed into age and gender groups. Friends Leo and Mary both completed the Hermosa Beach Triathlon, where Leo competed in the Men, Ages 30 - 34 group while Mary competed in the Women, Ages 25 - 29 group. Leo completed the race in 1:22:28 (4948 seconds), while Mary completed the race in 1:31:53 (5513 seconds). Obviously Leo finished faster, but they are curious about how they did within their respective groups. Here is some information on the performance of their groups:__
+
+• The finishing times of the Men, Ages 30 - 34 group has a mean of 4313 seconds with a
+standard deviation of 583 seconds.
+
+• The finishing times of the Women, Ages 25 - 29 group has a mean of 5261 seconds with a
+standard deviation of 807 seconds.
+
+• The distributions of finishing times for both groups are approximately Normal.
+Remember: a better performance corresponds to a faster finish.
+
+__(a) Write down the short-hand for these two normal distributions.__
+
+```{r print distribution shorthand, echo=FALSE}
+
+cat("Shorthand for normal distribution of M30-34 is N (\u03BC= 4313, \u03C3 = 583)  \n\nShorthand for normal distribution of F25-29 is N (\u03BC= 5261, \u03C3 = 807)")
+```
+
+
+__(b) What are the Z-scores for Leo’s and Mary’s finishing times? What do these Z-scores tell you?__
+
+```{r leo z, echo=FALSE, message=FALSE, warning=FALSE}
+z <- (4948-4313)/583
+
+lzp <- format(round(z, 2), nsmall = 2)
+
+cat("The Z-score for Leo's finishing time is", lzp)
+
+```
+
+```{r mary z, echo=FALSE, message=FALSE, warning=FALSE}
+z <- (5513-5261)/807
+
+mzp <- format(round(z, 2), nsmall = 2)
+
+cat("The Z-score for Mary's finishing time is", mzp)
+
+```
+
+__(c) Did Leo or Mary rank better in their respective groups? Explain your reasoning.__
+    
+    Mary ranked better, which is evident due to her time placing further below the mean time.
+    
+__(d) What percent of the triathletes did Leo finish faster than in his group?__
+
+```{r leo p-score}
+Z <- as.numeric(lzp)
+
+p <- pnorm(Z,0,1)
+
+pp <- format(round(p*100, 2), nsmall = 2)
+
+cat("d. ", pp, "% of triathaletes in Leo's group finished faster than him.")
+
+```
+
+
+__(e) What percent of the triathletes did Mary finish faster than in her group?__
+```{r mary p-score}
+
+Z <- as.numeric(mzp)
+
+p <- pnorm(Z,0,1)
+
+pp <- format(round(p*100, 2), nsmall = 2)
+
+cat("e. ", pp, "% of triathaletes in Mary's group finished faster than her.")
+
+```
+
+
+__(f) If the distributions of finishing times are not nearly normal, would your answers to parts (b) - (e) change? Explain your reasoning.__
+
+    Very much so. The only reason we are able to make the statements above are because of laws of normal distribution. 
+    
+<br>
+ 
+#### 3.18 Heights of female college students. 
+
+
+__Below are heights of 25 female college students.__
+
+(a) __The mean height is 61.52 inches with a standard deviation of 4.58 inches. Use this information to determine if the heights approximately follow the 68-95-99.7% Rule.__
+
+```{r do heights follow 68-95-99 rule}
+heights <- c(54,55,56,56,57,58,58,59,60,60,60,61,61,62,62,63,63,63,64,65,65,67,67,69,73)
+hmean <- mean(heights)
+hsd <- sd(heights) 
+
+sd1n <- hmean-hsd
+sd1p <- hmean+hsd
+
+sd1 <- (100*sum(heights > sd1n & heights < sd1p)/length(heights))
+
+sd2n <- hmean-2*hsd
+sd2p <- hmean+2*hsd
+
+sd2 <- 100*sum(heights > sd2n & heights < sd2p)/length(heights)
+
+
+sd3n <- hmean-3*hsd
+sd3p <- hmean+3*hsd
+
+sd3 <- 100*sum(heights > sd3n & heights < sd3p)/length(heights)
+
+
+cat('These heights closely follow the 68-95-99.7% rule as', sd1, '% of subjects were within 1 SD, ', sd2, '% were within 2 SD, and ', sd3, '% were within 3 SD')
+```
+
+
+b) __Do these data appear to follow a normal distribution? Explain your reasoning using the graphs provided below.__
+
+```{r check if heights are normal, echo=FALSE}
+
+heights <- c(54,55,56,56,57,58,58,59,60,60,60,61,61,62,62,63,63,63,64,65,65,67,67,69,73)
+
+hist(heights)
+
+qqnorm(heights, main = "Height Probability Plot")
+qqline(heights)
+
+```
+
+    Yes, the graphs suggest a fairly normal distribution. The histogram is somewhat right-skewed, but not 
+    enough to discount it as normal, especially given the preponderance of central tendency. 
+    
+    The scatter plot is a fairly straight line, also indicating a normal distribution.
+
+Running simulations to verify
+
+```{r qqnormsim, eval=TRUE}
+qqnormsim(heights)
+
+```
+    
+    
+<br>
+
+#### 3.22 Defective rate. 
+__A machine that produces a special type of transistor (a component of computers) has a 2% defective rate. The production is considered a random process where each transistor is independent of the others.__
+
+(a) What is the probability that the 10th transistor produced is the first with a defect?
+
+```{r 10 xistor defect probability, echo=FALSE}
+
+gd <- function(p,n,k){
+  ((1-p)^(n-k))*(p)*100
+}
+
+a <- gd(.02,10,1)
+
+a <- format(round(a, 2), nsmall = 2)
+
+cat("The probability that the 10th transistor produced is the first with a defect is", a,"%")
+```
+
+(b) What is the probability that the machine produces no defective transistors in a batch of 100?
+
+```{r 3.22 b}
+a <- 1-(.98^100)
+
+a <- format(round(a*100, 2), nsmall = 2)
+
+cat("The probability that the machine produces no defective transistors in a batch of 100 is", a, "%")
+
+```
+
+(c) On average, how many transistors would you expect to be produced before the first with a defect? What is the Standard Deviation?
+
+```{r 3.22 c}
+p <- .02
+m <- 1/p
+s <- sqrt((1-p)/(p^2))
+
+cat("On average, I would expect",m,"transistors to be produced before the first with a defect. The Standard Deviation is",s, "(though that feels really high to me)")
+```
+
+(d) Another machine that also produces transistors has a 5% defective rate where each transistor is produced independent of the others. On average how many transistors would you expect to be produced with this machine before the first with a defect? What is the standard deviation?
+
+```{r 3.22 d, echo=FALSE}
+p <- .05
+m <- 1/p
+s <- sqrt((1-p)/(p^2))
+
+cat("On average, I would expect",m,"transistors to be produced before the first with a defect. The Standard Deviation is",s, "(though it feels weird that the SD is again almost exactly the same as the mean)")
+```
+
+(e) Based on your answers to parts c and d, how does increasing the probability of an event affect the mean and standardd eviation of the wait time until success?
+
+```{r 3.22 e}
+print("It reduces both.")
+    
+```
+    
+<br>
+
+#### 3.38 Male children.
+
+**While it is often assumed that the probabilities of having a boy or a girl are the same, the actual probability of having a boy is slightly higher at 0.51. Suppose a couple plans to have 3 kids.**
+
+a) Use the binomial model to calculate the probability that two of them will be boys.
+
+```{r 3.38 a}
+
+n <-  3 # plan to have 3 kids
+k <-  2 # describing a boy as a success only because that is the probability given.
+p <-  0.51 # probability of it being a boy
+
+nf <- factorial(n)
+kf <- factorial(k)
+nlessk <- n-k
+nlesskf <- factorial(nlessk)
+
+
+p_2boys <- (nf/(kf*(factorial(n-k))))*(p^k)*(1-p)^(n-k)
+
+cat("The probability that two out of three children will be boys is", p_2boys, "%")
+
+```
+
+
+b) Write out all possible orderings of 3 children, 2 of whom are boys. Use these scenarios to calculate the same probability from part (a) but using the addition rule for disjoint outcomes. Confirm that your answers from parts (a) and (b) match.
+
+    Possible combinations: BBG, BGB, GBB
+    
+    I don't really see how the addition rule applies here since while the sex of each baby is disjoint, the collection of the three aren't and using it you would end up with a probability of 1.51 (which is not possible). Wouldn't it make more sense to use the geometric distribution calculation (3*(.51*.51*.49))? Using this method you do get to the same number.
+
+
+c) If we wanted to calculate the probability that a couple who plans to have 8 kids will have 3 boys, briefly describe why the approach from part (b) would be more tedious than the approach from part (a).
+
+    Because in part A you're just using the individual numbers (n = 8, k = 3, p = 0.51) rather than having to type/write out 8*(0.51*0.51*0.51*0.49*0.49*0.49*.49*0.49) not to mention that the second method gives far more opportunities for typos and the need to double check to make sure you have enough of each input.
+
+<br>
+
+#### 3.42 Serving in volleyball. 
+
+__A not-so-skilled volleyball player has a 15% chance of making the serve, which involves hitting the ball so it passes over the net on a trajectory such that it will land in the opposing team's court. Suppose that her serves are independent of each other.__
+
+a) What is the probability that on the 10th try she will make her 3rd successful serve?
+
+```{r 3.42 a}
+
+n <-  10 # nth trial
+k <-  3 # kth success
+p <-  0.15 # probability of making a serve
+
+
+nf <- factorial(n)
+kf <- factorial(k)
+nlessk <- n-k
+nlesskf <- factorial(nlessk)
+nlessone <- n-1
+klessone <- k-1
+
+serve <- (nf/(kf*(factorial(n-k))))*(p^k)*(1-p)^(n-k)
+
+cat("The probability that the volleyball player will make her 3rd successful serve on the 10th try is", serve, "%")
+
+```
+
+b) Suppose she has made two successful serves in nine attempts. What is the probability that her 10th serve will be successful?
+
+```{r 3.42 b}
+
+n <-  6 # number attempts
+k <-  4 # target success attempt -1
+p <-  0.8 # probability of making a serve
+
+nf <- factorial(n)
+kf <- factorial(k)
+nlessk <- n-k
+nlesskf <- factorial(nlessk)
+nlessone <- n-1
+klessone <- k-1
+
+A <- factorial(nlessone)
+B <- factorial(klessone)*nlesskf
+C <- p^k
+D <- (1-p)^nlessk
+
+serve <- (A/B)*C*D
+
+cat("The probability that the volleyball player will make her 3rd successful serve on the 10th try is", serve, "%")
+
+```  
+
+
+c) Even though parts (a) and (b) discuss the same scenario, the probabilities you calculated should be different. Can you explain the reason for this discrepancy?
+
+    The key difference between the two questions is that in the (a) it is possible that the 10th try WON'T be successful while in (b) the assertion is that she definitely will. 
+
+
