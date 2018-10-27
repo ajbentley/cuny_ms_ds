@@ -1,0 +1,284 @@
+---
+title: "607 Week 9 Assignment"
+author: "AJ Bentley"
+date: "October 24, 2018"
+output:
+  html_document:
+    theme: sandstone
+    highlight: espresso
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+library(xml2)
+library(rvest)
+library(stringr)
+library(plyr)
+library(dplyr)
+library(jsonlite)
+library(magrittr)
+library(kableExtra)
+library(data.table)
+```
+
+## Star Wars Reviews
+
+__I'm going to use the NYT movie api to pull together information from the biggest non-superhero space movies.__
+
+The first thing I'm going to do is get a list of the biggest non-superhero scifi movies by scraping imdb's page for top-rated space opera movies
+
+```{r load imdb}
+
+# linking to the imdb site with "space opera and feature film" having been filled into the keyword space on the initial space.
+
+imdb <- read_html("https://www.imdb.com/search/keyword?keywords=space-opera&sort=user_rating,desc&mode=detail&page=1&title_type=movie&ref_=kw_ref_typ")
+
+imdb
+```
+
+
+Now I'll pull in the titles of the top 50
+
+```{r pull in titles}
+
+raw_titles <- html_nodes(imdb, ".lister-item-header a")
+
+print(raw_titles)
+
+```
+
+Let's move this into a vector
+
+```{r xml to vector}
+
+df_t1 <- data.frame(html_text(raw_titles), stringsAsFactors = FALSE)
+
+df_t1
+
+
+```
+
+Going to need to do a little cleaning so that it's more likely for the api to find the titles.
+
+- Delete anything after a colon
+- Replace all spaces with plus signs
+- Remove duplicates
+
+```{r vector clean 1}
+
+df_t1$nocol <- str_replace_all(df_t1$html_text.raw_titles., ":.*", "")
+df_t1$plus <- str_replace_all(df_t1$nocol, "[:space:]", "+")
+                            
+titles <- df_t1$plus
+
+plustitles <- unique(titles)
+
+plustitles
+
+```
+
+I'm going to test some code using star+wars as a subject
+
+```{r starwars}
+
+movie_key <- "&api-key=959cf52da4894908aecec131fb547d4e"
+
+url <- "http://api.nytimes.com/svc/movies/v2/reviews/search.json?query=star+wars&opening-date=1930-01-01;2000-01-01"
+req <- fromJSON(paste0(url, movie_key))
+
+starwars <- req$results[1]
+
+starwars
+
+```
+
+Because each search is going to result in multiple results for things like "star wars" I'm going to need to build a second movie list that has individual titles and the rerun the search.
+
+Testing some code on starwars
+
+```{r}
+
+sw_list <- laply(starwars, function(x) laply(x, identity))
+
+class(sw_list)
+
+```
+
+Okay, looks like that worked. Moving on to making a new list. 
+
+```{r broaderlist}
+
+titlelist2 <- data.frame("Title"=c())
+
+movie_key <- "&api-key=959cf52da4894908aecec131fb547d4e"
+
+for (i in plustitles){
+  url <- paste0("http://api.nytimes.com/svc/movies/v2/reviews/search.json?query=",i, "&opening-date=1930-01-01;2018-10-01")
+  req <- fromJSON(paste0(url, movie_key))
+  bob <- req$results[1]
+  bob_list <- laply(bob, function(x) laply(x, identity))
+  titlelist2 <- unlist(c(titlelist2, bob_list))
+  Sys.sleep(3)
+
+}
+
+class(titlelist2)
+
+```
+
+And now I'll add the pluses back in so that I can search on the individual titles
+
+```{r replus}
+
+plust2 <- str_replace_all(titlelist2, "[:space:]", "+")
+                            
+plust2 <- unique(plust2)
+
+plust2
+
+
+```
+
+
+
+Before I do a search based on this I'm going to test to make sure colons aren't going to be an issue.
+
+
+```{r colon test}
+
+movie_key <- "&api-key=959cf52da4894908aecec131fb547d4e"
+
+url <- "http://api.nytimes.com/svc/movies/v2/reviews/search.json?query=Star+Trek:+the+Motion+Picture&opening-date=1930-01-01;2000-01-01"
+req <- fromJSON(paste0(url, movie_key))
+
+trek1 <- req$results[1]
+
+trek1
+
+```
+
+Sweet! Now we should be able to grab the whole list...but we can't!
+
+NYT hasn't reviewed every movie on the list so we need to cut them out.
+
+```{r reviewed titles}
+
+revtitles <- data.frame("Title"=c())
+
+movie_key <- "&api-key=959cf52da4894908aecec131fb547d4e"
+
+for (i in plust2){
+  url <- paste0("http://api.nytimes.com/svc/movies/v2/reviews/search.json?query=",i, "&opening-date=1930-01-01;2018-10-01")
+  req <- fromJSON(paste0(url, movie_key))
+  if (req[4] > 0){
+    bob <- req$results[1]
+    bob_list <- laply(bob, function(x) laply(x, identity))
+    revtitles <- unlist(c(revtitles, bob_list))
+    Sys.sleep(2)
+  }
+
+}
+
+revtitles
+
+```
+
+It looks like there are a lot of repeats--let's get rid of them and replus them while we're at it.
+
+```{r rereplus}
+
+revtitles <- str_replace_all(revtitles, "[:space:]", "+")
+                            
+revtitles <- unique(revtitles)
+
+revtitles
+
+```
+
+
+```{r create space opera dataframe}
+
+sodf <- data.frame("title" <- c(), "mpaa" <- c(), "critpick" <- c(), "byline" <- c(), "headline" <- c(), "summary" <- c(), "pubdate" <- c(), "opening_date" <- c(), "updated" <- c(), "link" <- c(), "mm" <- c())
+
+
+
+```
+
+I can't get the code right to do a loop over the titles so I'm doing them each individually. I know there were some titles that weren't really space operas so I just cut them.
+
+```{r run titles individually}
+
+movie_key <- "&api-key=959cf52da4894908aecec131fb547d4e"
+
+i <- "Rogue+One:+A+Star+Wars+Story"
+url <- paste0("http://api.nytimes.com/svc/movies/v2/reviews/search.json?query=",i,"&opening-date=1930-01-01;2018-10-01")
+req <- fromJSON(paste0(url, movie_key))
+sodf <- rbind(sodf, req$results[1:9])
+
+i <- "Return+of+the+Jedi"
+url <- paste0("http://api.nytimes.com/svc/movies/v2/reviews/search.json?query=",i,"&opening-date=1930-01-01;2018-10-01")
+req <- fromJSON(paste0(url, movie_key))
+sodf <- rbind(sodf, req$results[1:9])
+
+i <- "Star+Wars"
+url <- paste0("http://api.nytimes.com/svc/movies/v2/reviews/search.json?query=",i,"&opening-date=1930-01-01;2018-10-01")
+req <- fromJSON(paste0(url, movie_key))
+sodf <- rbind(sodf, req$results[1:9])
+
+i <- "Guardians+of+the+Galaxy"
+url <- paste0("http://api.nytimes.com/svc/movies/v2/reviews/search.json?query=",i,"&opening-date=1930-01-01;2018-10-01")
+req <- fromJSON(paste0(url, movie_key))
+sodf <- rbind(sodf, req$results[1:9])
+
+i <- "Star+Trek"
+url <- paste0("http://api.nytimes.com/svc/movies/v2/reviews/search.json?query=",i,"&opening-date=1930-01-01;2018-10-01")
+req <- fromJSON(paste0(url, movie_key))
+sodf <- rbind(sodf, req$results[1:9])
+
+i <- "The+Fifth+Element"
+url <- paste0("http://api.nytimes.com/svc/movies/v2/reviews/search.json?query=",i,"&opening-date=1930-01-01;2018-10-01")
+req <- fromJSON(paste0(url, movie_key))
+sodf <- rbind(sodf, req$results[1:9])
+
+i <- "Spaceballs"
+url <- paste0("http://api.nytimes.com/svc/movies/v2/reviews/search.json?query=",i,"&opening-date=1930-01-01;2018-10-01")
+req <- fromJSON(paste0(url, movie_key))
+sodf <- rbind(sodf, req$results[1:9])
+
+i <- "The+Chronicles+of+Riddick"
+url <- paste0("http://api.nytimes.com/svc/movies/v2/reviews/search.json?query=",i,"&opening-date=1930-01-01;2018-10-01")
+req <- fromJSON(paste0(url, movie_key))
+sodf <- rbind(sodf, req$results[1:9])
+
+i <- "Dune"
+url <- paste0("http://api.nytimes.com/svc/movies/v2/reviews/search.json?query=",i,"&opening-date=1930-01-01;2018-10-01")
+req <- fromJSON(paste0(url, movie_key))
+sodf <- rbind(sodf, req$results[1:9])
+
+i <- "John+Carter"
+url <- paste0("http://api.nytimes.com/svc/movies/v2/reviews/search.json?query=",i,"&opening-date=1930-01-01;2018-10-01")
+req <- fromJSON(paste0(url, movie_key))
+sodf <- rbind(sodf, req$results[1:9])
+
+i <- "Ender's+Game"
+url <- paste0("http://api.nytimes.com/svc/movies/v2/reviews/search.json?query=",i,"&opening-date=1930-01-01;2018-10-01")
+req <- fromJSON(paste0(url, movie_key))
+sodf <- rbind(sodf, req$results[1:9])
+
+sodf[1]
+```
+
+
+
+```{r final product check}
+
+sodf
+
+```
+
+```{r SAVE THAT FILE!!!}
+
+write.csv(sodf, file = "space_opera_reviews.csv")
+
+```
