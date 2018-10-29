@@ -1,0 +1,238 @@
+---
+title: "606 HW Chapter 5"
+author: "AJ Bentley"
+date: "10/27/2018"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+#### 5.6 Working backwards, Part II. 
+
+A 90% confidence interval for a population mean is (65, 77). The population distribution is approximately normal and the population standard deviation is unknown. This confidence interval is based on a simple random sample of 25 observations. Calculate the sample mean, the margin of error, and the sample standard deviation.
+
+__Calculating sample mean ($\mu$)__
+
+$\mu$ $\pm$ ME = CI $\Rightarrow$ $\mu$ - ME = 65  $\Rightarrow$  -ME = 65 - $\mu$     $\Rightarrow$  
+
+ME ~*ci low*~ = -65 + $\mu$
+
+<br>
+
+$\mu$ + ME = 77   $\Rightarrow$  ME = 77 - $\mu$  $\Rightarrow$  
+
+ME ~*ci high*~ = 77 - $\mu$
+
+<br>
+
+ME ~*ci low*~ = ME ~*ci high*~
+
+77 - $\mu$ = -65 + $\mu$   
+
+__$\mu$ = 71__
+
+***
+
+__Calculating margin of error (ME)__
+
+$\mu$ $\pm$ ME = CI  $\Rightarrow$  \- ME = CI ~*low*~ - $\mu$  $\Rightarrow$  ME = -CI ~*low*~ + $\mu$  $\Rightarrow$  ME ~*ci low*~ = -65 + 71 
+
+ME ~*ci low*~=  __6__
+
+
+<br>
+
+ME = CI ~*high*~ + $\mu$  $\Rightarrow$  ME ~*ci high*~ = 77 - 71   $\Rightarrow$  
+
+ME ~*ci high*~= __6__
+
+***
+
+__Calculating standard error (SE)__
+
+SE = ME / Z-score ~*desired CI*~
+
+SE = $\frac{6}{1.645}$ = 3.65
+
+***
+
+__Calculating the sample standard deviation ($\sigma$)__
+
+$\sigma$ = SE `x` $\sqrt{n}$  $\Rightarrow$  $\sigma$ = 3.65 `x` $\sqrt{25}$
+
+$\sigma$ = __0.73__
+
+***
+
+__Summary__
+
+    sample mean = 71
+    
+    Margin of Error = 6
+    
+    sample standard deviation = 0.73
+
+<br>
+
+#### 5.14 SAT scores. 
+
+SAT scores of students at an Ivy League college are distributed with a standard deviation of 250 points. Two statistics students, Raina and Luke, want to estimate the average SAT score of students at this college as part of a class project. They want their margin of error to be no more than 25 points.
+
+a) __Raina wants to use a 90% confidence interval. How large a sample should she collect?__
+
+ME = Z-score ~*desired CI*~ `x` SE  $\Rightarrow$  SE = ME / Z-score ~*desired CI*~  
+
+$\frac{25}{1.645}$   --->  15.2
+
+<br>
+
+n = $\frac{\sigma}{SE^2}$     $\Rightarrow$     N = $\frac{250}{15.2^2}$     $\Rightarrow$     __n = 268.96__
+
+    Raina should collect a sample of at least 269 records.
+
+b) __Luke wants to use a 99% confidence interval. Without calculating the actual sample size, determine whether his sample should be larger or smaller than Raina’s, and explain your reasoning.__
+
+    Luke would be able to use a larger sample size since he is casting a wider net. 
+    
+    Mathematically the Z score when calculating the SE will be larger, resulting in a smaller SE. This smaller SE will, in turn, be used as the denominator in the calculation to get to n, resulting in a larger number.
+
+
+c) __Calculate the minimum required sample size for Luke.__
+
+SE = ME / Z-score ~*desired CI*~}    $\Rightarrow$     $\frac{25}{1.96}$     $\Rightarrow$    12.8
+
+n = $\sigma$ / SE^2^
+
+n = 250 / 12.8^2^
+
+__n = 380.25__
+
+    Luke should collect a sample of at least 380 records.
+
+<br>
+
+#### 5.20 High School and Beyond, Part I. 
+
+__The National Center of Education Statistics conducted a survey of high school seniors, collecting test data on reading, writing, and several other subjects. Here we examine a simple random sample of 200 students from this survey. Side-by-side box plots of reading and writing scores as well as a histogram of the differences in scores are shown below.__
+
+
+a) __Is there a clear difference in the average reading and writing scores?__
+ 
+    The only apparent difference is in the overall range of the numbers where writing has clearly fewer high scores and slightly fewer low scores. Mean and IQR are neck and neck.
+
+
+b) __Are the reading and writing scores of each student independent of each other?__
+
+    This is arguable. We are looking at test scores for the same students, so they are linked, but we would need to look into the extent to which success in one subject is correlated to success in the other.
+    
+
+c) __Create hypotheses appropriate for the following research question: is there an evident difference in the average scores of students in the reading and writing exam?__
+
+    H~0~ = There is no differrence between the average reading and writing scores.
+    
+    H~A~ = The is a differrence between the average reading and writing scores.
+
+
+d) __Check the conditions required to complete this test.__
+
+    There are over 30 records, the data has a nearly normal distribution, and the observations are independent so it meets the conditions for inference.
+
+
+e) The average observed difference in scores is $\bar{x}$ ~*read - write*~ = -0.545, and the standard deviation of the differences is 8.887 points. __Do these data provide convincing evidence of a difference between the average scores on the two exams?__
+
+SE = $\frac{\sigma}{\sqrt{n}}$   $\Rightarrow$  SE = $\frac{.887}{\sqrt{200}}$
+
+SE = $\frac{8.887}{14.14}$ = __0.629__
+
+    No, the mean difference is well within the SD of the differences so we cannot reject the null hypothesis.
+
+f) __What type of error might we have made? Explain what the error means in the context of the application.__
+
+    We may have made a Type 2 error, predicting that there was no difference in scores (null hypothesis is true) when there actually was (alternate hypothesis is true).
+
+
+g) __Based on the results of this hypothesis test, would you expect a confidence interval for the average difference between the reading and writing scores to include 0? Explain your reasoning.__
+
+    Yes, I would assume 0 would be included in the confidence interval as the mean is near 0 are the standard deviation is nearly 9.
+    
+    Calculation confirmed this--CI (-1.78, 0.69)
+
+<br>
+
+#### 5.32 Fuel efficiency of manual and automatic cars, Part I. 
+
+Each year the US Environmental Protection Agency (EPA) releases fuel economy data on cars manufactured in that year. Below are summary statistics on fuel efficiency (in miles/gallon) from random samples of cars with manual and automatic transmissions manufactured in 2012. Do these data provide strong evidence of a difference between the average fuel efficiency of cars with manual and automatic transmissions in terms of their average city mileage? Assume that conditions for inference are satisfied.
+
+
+    H~0~ = There is no differrence between the fuel efficiency of manual and automatic cars.
+    
+    H~A~ = There is a differrence between the fuel efficiency of manual and automatic cars.
+
+
+Difference in means = 19.85 - 16.12 = 3.73
+
+n = 26
+
+Df = 25
+
+s1 = SD of automatic = 3.58
+
+s2 = SD of manual = 4.51
+
+A = $\frac{s1^2}{n}$ = .49
+
+B = $\frac{s2^2}{n}$ = .78
+
+SE = $\sqrt{A+B}$ = 1.13
+
+
+t*SE for 95% CI= 2.06
+
+-3.73 $\pm$  2.06 `x` 1.13 $\Rightarrow$ CI = (1.40, 6.06)
+
+T = $\frac{3.73}{1.13}$ = 3.31 $\Rightarrow$ p < 0.01
+
+As the p-value is less than the $\alpha$ we can reject the null hypothesis and say that the data provide strong evidence that there is a difference between the fuel efficiency of manual and automatic cars.
+
+
+
+#### 5.48 Work hours and education. 
+The General Social Survey collects data on demographics, education, and work, among many other characteristics of US residents.
+
+Using ANOVA, we can consider educational attainment levels for all 1,172 respondents at once. Below are the distributions of hours worked by educational attainment and relevant summary statistics that will be helpful in carrying out this analysis.
+
+a) __Write hypotheses for evaluating whether the average number of hours worked varies across the five groups.__
+
+H~0~ = The average number of hours worked does not vary across the five groups ($\mu_{less.than.HS}$ = $\mu_{HS}$ = $\mu_{Jr.Coll}$ = $\mu_{Bachelor's}$ = $\mu_{Master's}$)
+
+H~A~ = The average number of hours worked varies across the five groups.
+
+
+b) __Check conditions and describe any assumptions you must make to proceed with the test.__
+
+    All observations are independent within and across grups.
+    
+    The distributions look fairly normal except for Masters, which is left-skewed. 
+    
+    The Masters group also is unlike the others in terms of variability, as does Bachelors, but I don't think it is large enough to throw the data out.
+    
+    To proceed with the test we must assume that the distributions and variability are not so out of whack as to make the test nonsensical. We also have to assign an alpha. We'll use 5%.
+
+
+c) __Below is part of the output associated with this test. Fill in the empty cells.__
+
+|           | Df    | SumSq   | MeanSq | F    | Pr(>F) |
+|-----------|-------|---------|--------|------|--------|
+| degree    | 4     | 2,006   | 501.54 | 2.19 | 0.0682 |
+| Residuals | 1,167 | 267,382 | 229.12 |      |        |
+| Total     | 1,172 | 269,388 |        |      |        |
+
+d) __What is the conclusion of the test?__
+
+    The p value is greater than the alpha, therefor we cannot reject the null hypothesis.
+
+
