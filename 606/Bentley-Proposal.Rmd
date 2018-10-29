@@ -1,0 +1,73 @@
+---
+title: "606 Final Project Proposal"
+author: "A. Joshua Bentley"
+date: "October 29, 2018"
+output:
+  pdf_document: default
+  html_document:
+    highlight: espresso
+    theme: sandstone
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+options(warn=-1)
+```
+
+### Research question 
+
+In recent months I have gotten into somewhat heated political conversations, the most recent of which had to do with the change of procedure in approving Supreme Court nominees to reduce the number necessary for approval from 60 to 51.
+
+In one particular discussion someone brought up the fact that the Democrats had done the same in terms of approving Federal judges, which was true but this was done because the GOP would not approve anyone that Obama had put up.
+
+My research questions is this:
+
+Was there a clear turning point in the function of Congress from a body that would advise and consent Presidential nominations to simply a full brake or accelerator on Presidential nominations?
+
+
+### Cases 
+
+I have a number of potential sources that range from individual approvals to approvals per president so there are between 45 and hundreds of thousands. It will probably be closer to a few hundred.
+
+
+
+### Data collection 
+
+The agonizing part of this project is that most of the data are only available as pdfs. I will contact the publishers and see if they have raw data they can share but otherwise I'm going to use a converter to bring the data together.
+
+
+### Type of study 
+
+This is an observational study.
+
+
+
+### Data Source 
+
+Sources I have found thus far include:
+
+- govtrack.us
+
+- uscourts.gov
+
+- voteview.com
+
+
+### Dependent Variable
+
+Dependent variable will be the year
+
+
+### Independent Variable
+
+Independent variables will be number of approved nominees, majority party, percent skew of majority, and Presidential party
+
+
+
+### Relevant summary statistics 
+
+I haven't collected the data yet and don't expect to be able to provide the requested charts until I have done the analysis.
+
+Summary stats will include percent of approved nominees per congress as a function of alignment of Presidential and Congressional political leanings annually.
+
+The main visualization I am considering is a stacked bar showing party skew as a percent of the total, but the total being the number of approved nominees along with some sort of color code showing the Presidential party.
