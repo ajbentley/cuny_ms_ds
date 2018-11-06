@@ -1,0 +1,331 @@
+---
+title: "CUNY MSDS 606 Week 6 Homework"
+author: "A. Joshua Bentley"
+date: "11/4/2018"
+output:
+  rmdformats::readthedown:
+    highlight: zenburn
+    toc: 6
+    toc_float:
+      toc_depth: 6
+      collapsed: true
+    
+---
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+library(tidyverse)
+library(kableExtra)
+library(RTextTools)
+library(SnowballC)
+library(tm)
+
+```
+
+### 6.6 2010 Healthcare Law. 
+
+#### On June 28, 2012 the U.S. Supreme Court upheld the much debated 2010 healthcare law, declaring it constitutional. A Gallup poll released the day after this decision indicates that 46% of 1,012 Americans agree with this decision. At a 95% confidence level, this sample has a 3% margin of error. Based on this information, determine if the following statements are true or false, and explain your reasoning.
+
+__a) We are 95% confident that between 43% and 49% of Americans in this sample support the decision of the U.S. Supreme Court on the 2010 healthcare law.__   \
+False, _however it is technically true because we know what % of the sample believes it to be true and by association know that this figure is between those figures._
+
+__b) We are 95% confident that between 43% and 49% of Americans support the decision of the U.S. Supreme Court on the 2010 healthcare law.__   \
+True
+
+__c) If we considered many random samples of 1,012 Americans, and we calculated the sample proportions of those who support the decision of the U.S. Supreme Court, 95% of those sample proportions will be between 43% and 49%.__   \
+True
+
+__d) The margin of error at a 90% confidence level would be higher than 3%.__   \
+False
+
+
+### 6.12 Legalization of marijuana, Part I. 
+
+#### The 2010 General Social Survey asked 1,259 US residents, “Do you think the use of marijuana should be made legal, or not?” 48% of the respondents said it should be made legal.
+
+__a) Is 48% a sample statistic or a population parameter? Explain.__\
+It is a sample statistic as it reflects informatoin upon the sample only. The statistic can be used to predict a population parameter but does not reflect it.
+
+__b) Construct a 95% confidence interval for the proportion of US residents who think marijuana should be made legal, and interpret it in the context of the data.__
+
+CI = Point Estimate $\pm$ z* \cdot\ SE
+
+
+SE~p-hat~ = $\sqrt{\frac{p\  \cdot\ (1-p)}{n}}$\
+$\Downarrow$\
+SE~p-hat~ = $\sqrt{\frac{.48\  \cdot\ .52)}{1259}}$\
+$\Downarrow$\
+SE~p-hat~ = $\sqrt{\frac{.2496)}{1259}}$\
+$\Downarrow$\
+SE~p-hat~ = $\sqrt{0.000198}$\
+$\Downarrow$\
+SE~p-hat~ = 0.014
+
+
+CI = 0.48 $\pm$ 1.96 \cdot\ 0.014\
+$\Downarrow$\
+CI = (45% , 51%)
+
+
+_I am 95% confident that the proportion of the population that believes in legalization is between 45% and 51%._
+
+
+
+__c) A critic points out that this 95% confidence interval is only accurate if the statistic follows a normal distribution, or if the normal model is a good approximation. Is this true for these data? Explain.__\
+We can assume from the description that the respondants were collected via a random sample and that they are independent and there are more than 10 successes and failures so we can treat the sample as though it were distributed normally.
+
+
+__d) A news piece on this survey’s findings states, “Majority of Americans think marijuana should be legalized.” Based on your confidence interval, is this news piece’s statement justified?__\
+That is an inaccurate depiction of the results as the confidence interval only barely exceeds 50%. Saying that there is a near even split would be more accurate.
+
+
+
+### 6.20 Legalize Marijuana, Part II. 
+
+#### As discussed in Exercise 6.12, the 2010 General Social Survey reported a sample where about 48% of US residents thought marijuana should be made legal. 
+
+__If we wanted to limit the margin of error of a 95% confidence interval to 2%, about how many Americans would we need to survey?__\
+
+0.02 > 1.96 $\cdot \sqrt{\frac{p(1-p)}{n}}$\
+$\Downarrow$\
+
+0.02 > 1.96 $\cdot \sqrt{\frac{0.48 \cdot 0.52}{n}}$\
+$\Downarrow$\
+
+0.02^2^ > 1.96^2^ $\cdot \frac{0.2496}{n}$\
+$\Downarrow$\
+
+n > $\frac{1.96^2 \cdot 0.2496}{0.0004}$\
+$\Downarrow$\
+
+n > 2397.158
+
+We would need to survey at least 2,398 Americans.
+
+
+### 6.28 Sleep deprivation, CA vs. OR, Part I. 
+
+#### According to a report on sleep deprivation by the Centers for Disease Control and Prevention, the proportion of California residents who reported insufficient rest or sleep during each of the preceding 30 days is 8.0%, while this proportion is 8.8% for Oregon residents. These data are based on simple random samples of 11,545 California and 4,691 Oregon residents. 
+
+__Calculate a 95% confidence interval for the difference between the proportions of Californians and Oregonians who are sleep deprived and interpret it in context of the data.__
+
+1. Calculate Standard Error
+
+SE = $\sqrt{\frac{0.08\  \cdot\ 0.92}{11545} + \frac{0.088\  \cdot\ 0.912}{4691}}$\
+$\Downarrow$\
+SE = $\sqrt{\frac{0.0736}{11545} + \frac{0.0803}{4691}}$\
+$\Downarrow$\
+SE = 0.0048
+
+2. Calculate Pooled Point Estimate
+
+CA 8% of 11,545 = 923.6 $\Rightarrow$\ 924 People
+OR 8.8% of 4,691 = 412.8 $\Rightarrow$\ 413 People
+
+Pooled Proportion = $\frac{924 + 413}{11,545 + 4,691}$\
+$\Downarrow$\
+Pooled Proportion = $\frac{1337}{16,236}$\
+$\Downarrow$\
+Pooled Proportion = 8.2%
+
+3. Calculate Confidence Interval
+
+CI = Point Estimate $\pm$ z* \cdot\ SE
+
+CI = 0.082 $\pm$ 1.96 \cdot\ 0.0048\
+$\Downarrow$\
+CI = (7.3% , 9.1%)
+
+
+### 6.44 Barking deer. 
+
+#### Microhabitat factors associated with forage and bed sites of barking deer in Hainan Island, China were examined from 2001 to 2002. In this region woods make up 4.8% of the land, cultivated grass plot makes up 14.7% and deciduous forests makes up 39.6%. Of the 426 sites where the deer forage, 4 were categorized as woods, 16 as cultivated grassplot, and 61 as deciduous forests. The table below summarizes these data.
+
+
+| Woods | Cultivated grassplot | Deciduous forests | Other | Total |
+|:-----:|:--------------------:|:-----------------:|:-----:|:-----:|
+| 4 | 16 | 67 | 345 | 426 |
+| 0.9% | 3.8% | 15.7% | 81.0% | 100% |
+
+```{r 6.44 table}
+
+bdf <- data.frame("Habitat" = c("Woods", "Cultivated Grassplot", "Deciduous Forests", "Other"), "Count" = c(4, 16, 67, 345), "Proportion" = c(0.09, 0.038, 0.157, 0.81))
+
+bdf
+
+```
+
+__a) Write the hypotheses for testing if barking deer prefer to forage in certain habitats over others.__\
+
+__Hypotheses:__ \
+H~0~ = Barking deer have no preference in foraging habitats.\
+H~A~ = Barking deer prefer some foraging habitats over others. 
+
+__Hypotheses (mathematical):__ \
+H~0~ = p~w~ = p~gp~ = p~df~ = p~o~\
+H~A~ = the proportions of foraging preferences are not equal
+
+__b) What type of test can we use to answer this research question?__\
+ANOVA
+
+__c) Check if the assumptions and conditions required for this test are satisfied.__\
+The description does not indicate how the sample was collected or if the researchers had identified / tagged the individual deer so it is not possible to confirm that there is not duplication, therefor conditions are not satisfied.
+
+__d) Do these data provide convincing evidence that barking deer prefer to forage in certain habitats over others? Conduct an appropriate hypothesis test to answer this research question.__\
+*Proceeding as though conditions are met*
+
+
+1. Calculate Standard Error
+
+```{r 6.44 table expanded}
+
+bdf$Reciprop <- 1-bdf$Proportion
+bdf$propbyrecip <- bdf$Proportion * bdf$Reciprop
+bdf$under <- bdf$propbyrecip / 426
+bdf
+
+```
+
+```{r 6.44 calculate SE}
+under <- sum(bdf$under)
+SE <- sqrt(under)
+paste("The Standard Error for these data is", SE)
+```
+
+
+2. Calculate Pooled Point Estimate
+
+```{r 6.44 calculate pooled}
+
+pp <- sum(bdf$Count) / (426*4)
+
+paste("The Pooled Proportion for these data is", pp)
+```
+
+3. Calculate Test Statistic    
+
+Z = $\frac{point\  estimate - null\  value}{SE}$\
+$\Downarrow$\
+Z = $\frac{0.2535 - 0}{0.0308}$\
+$\Downarrow$\
+Z = 8.2305
+
+With a Z score this high the null hypothesis can safely be rejected.
+
+
+
+### 6.48 Coffee and Depression. 
+
+#### Researchers conducted a study investigating the relationship between caffeinated coffee consumption and risk of depression in women. They collected data on 50,739 women free of depression symptoms at the start of the study in the year 1996 and these women were followed through 2006. The researchers used questionnaires to collect data on caffinated coffee consumption, asked each individual about physician-diagnosed depression, and also asked about the use of antidepressants. The table below shows the distribution of incidences of depression by amount of caffeinated coffee consumption.
+
+__Caffeinated coffee consumption__
+
+
+| Clinical Depression | $\le$ 1 / wk | 2-6 / wk | 1 / day | 2-3 / day | $\ge$ 4 / day |
+|:-------------------:|:------------:|:--------:|:-------:|:---------:|:-------------:|
+| Yes | 670 | 373 | 905 | 564 | 95 |
+| No | 11,545 | 6,244 | 16,326 | 11,726 | 2,288 |
+| Total | 12,215 | 6,617 | 17,234 | 12,290 | 2,383 
+
+```{r 6.48 table}
+
+cdf <- data.frame("Consumption" = c("< 2 cups/wk", "2-6 cups/wk", "1 cup/day", "2-3 cups/day", ">3 cups/day"), "Depressed" = c(670, 373, 905, 564, 95), "Not Depressed" = c(11545, 6244, 16326, 11726, 2288), "Total" = c(12215, 6617, 17234, 12290, 2383 ))
+
+```
+
+__a) What type of test is appropriate for evaluating if there is an association between coffee intake and depression?__\
+Chi-Square
+
+
+__b) Write the hypotheses for the test you identified in part (a).__\
+
+__Hypotheses:__ \
+H~0~ = Caffeinated coffee consumption has no impact on clinical depression in women.\
+H~A~ = Caffeinated coffee consuption has an impact on clinical depression in women. 
+
+
+__c) Calculate the overall proportion of women who do and do not suffer from depression.__\
+
+```{r 6.48 c}
+tot_dep <- sum(cdf$Depressed)/sum(cdf$Total)
+
+tot_not <- sum(cdf$Not.Depressed)/sum(cdf$Total)
+
+paste0((round(tot_dep*100,1)), "% of women in the study suffered depression while ", round(tot_not*100,1), "% did not.")
+
+```
+
+__d) Identify the expected count for the highlighted cell, and calculate the contribution of this cell to the test statistic, i.e. (Observed − Expected)2/Expected.__\
+The expected count is the count if we assume that the null hypothesis is true, which would be 5.1% as the null hypothesis is that there is no impact. Expected count = 338. 
+
+```{r 6.48 d}
+
+contribution <- ((373-338)^2)/338
+
+paste("The contribution of the highlighted cell to the test statistic is", round(contribution,2))
+```
+
+
+__e) The test statistic is #2 = 20.93. What is the p-value?__
+
+Less than 0.001.
+
+
+__f) What is the conclusion of the hypothesis test?__
+
+Z = $\frac{point estimate - null value}{SE of point estimate}$
+
+Expected / null proportion can be estimated by looking at the total depressed by total participants
+
+```{r 6.48 f null proportion}
+
+null_prop <- sum(cdf$Depressed) / sum(cdf$Total)
+
+paste("The expected / null proportion to apply for this test is", round(null_prop,2))
+```
+
+I can now create expected / null values for each group and calculate the Z score
+
+```{r 6.48 null values}
+
+# create null values based
+cdf$null_vals <- ceiling(cdf$Total * null_prop)
+
+# subtract null from Depressed
+cdf$znum <- cdf$Depressed - cdf$null_vals
+
+# square root of null value
+cdf$zden <- sqrt(cdf$null_vals)
+
+# calculate Z scores
+cdf$Z_score <- cdf$znum / cdf$zden
+
+# calculate Z squares
+cdf$Z_square <- cdf$Z_score^2
+
+cdf
+
+zt <- sum(cdf$Z_square)
+
+paste("The test statistic for these data is", zt,2)
+
+```
+
+The p-value here is also less than 0.001, so we can reject the null hypothesis.
+
+
+__g) One of the authors of this study was quoted on the NYTimes as saying it was “too early to recommend that women load up on extra coffeee” based on just this study. Do you agree with this statement? Explain your reasoning.__
+
+Of course! It's a single study that needs to be replicated, a basic step in the scientific method. 
+
+
+
+
+
+
+
+
+
+
+
+
