@@ -1,0 +1,49 @@
+---
+title: "Seamless Recommender"
+author: "AJ Bentley"
+date: "11/6/2018"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+Seamless is a website and associated app that revolutionized the process of ordering food by providing an interface that customers could use to order from the menu, allowing them to combine the actions of deciding what they wanted to eat and doing the actual ordering and avoiding communication issues when speaking to the restaurant on the phone.
+
+While they have some recommendation functions, they are limited and don't seem to be particularly robust. 
+
+When looking for a restaurant the only recommendations they give are a row of four restaurants based on resent cuisine choices. In my case, "Since you enjoy American cuisine" and listing Papa John's Subway, Kennedy Fried Chicken, and Boston Market.
+
+What's really confusing is that I mostly order Mexican, Thai, Italian, and salad, so their system really needs fixing.
+
+When you're in a menu making your order it will have some suggestions, too. Sometimes these make sense based on things that I've ordered from other restaurants, others less so (e.g., because I order pizza slices they recommend I order a whole pie).
+
+Essentially, it is a very basic and rudementary system that appears to rely solely upon the single user's past habits. This is ridiculous.
+
+I don't know how many members Seamless (combined with sister services Grubhub, Eat24, LevelUp, Allmenues, and Menupages) but it should be fairly easy, even without any demographic information, for the company to create a profile of each user.
+
+At its most basic this profile could include what restaurants were ordered from, what items were ordered, and how often orders were placed. This would allow a recommendation engine to know how loyal a member was, what days and time of day they order, and what price-point they usually pay (both in terms of the general expense of the restaurants used and the amount spent per order). 
+
+They could also create an "adventurousness" profile. Does the member tend to stick with a handful of restaurants? Do they order the same thing every time they order? Do they look at what new restaurants are around?
+
+A final suggestion would be to map profiles to other users who have similar profiles and make suggestions based on good reviews / repeat orders from them.
+
+To the specific questions:
+
+1 - The target users are diners who are looking for convenience in ordering. 
+
+2 - Their key (basic) goals are to have a good dining / delivery / pickup service. There are, however, ideal goals, as well, which would include an experience with new dining options which they may feel hesitant to make on their own, especially in the world of "analysis paralysis" we live in.
+
+3 - The recommendations laid out earlier address this. 
+
+
+
+
+
+
+
+
+
