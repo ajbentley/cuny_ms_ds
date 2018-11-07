@@ -1,0 +1,556 @@
+---
+title: "CUNY MSDS 607: Canned Spam"
+author: "A. Joshua Bentley and Alexander Niculescu"
+date: "10/30/2018"
+output:
+  rmdformats::readthedown:
+    highlight: zenburn
+    toc: 6
+    toc_float:
+      collapsed: false
+    
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+library(dplyr)
+library(kableExtra)
+library(RTextTools)
+library(plyr)
+library(pROC)
+library(SDMTools)
+library(SnowballC)
+library(tictoc)
+library(tidyverse)
+library(tm)
+library(wordcloud)
+
+set.seed(23)
+tic.clearlog()
+```
+
+# Project Overview
+
+A common use for NLP is to help email service providers discern spam, unwanted or inappropriate messages sent in bulk to many people, from email pertenant and addressed to a user.
+
+In this exercise we will examine a sample of known spam emails, compare them to known non-spam emails (which will be referred to as "ham"), and train and test models to find the best method to make this comparison.
+
+# Guiding Question
+
+There are a number of classifier models that can be used to identify spam from ham. Which one is the best to use in production?
+
+
+## Prepare the data
+
+Using curl and tar to download, extract and unpack files from the apache directory 
+### Step 1. Read in and load the data
+```{bash download-spam-ham}
+#Bentley Source Download
+#easy_ham_2 <- VCorpus(DirSource("easy_ham_2"))
+#spam_2 <- VCorpus(DirSource("spam_2"))
+
+#Niculescu Source Download
+#curl -s https://spamassassin.apache.org/old/publiccorpus/20021010_easy_ham.tar.bz2 -o ../DATA/easy_ham.tar.bz2
+#curl -s https://spamassassin.apache.org/old/publiccorpus/20021010_spam.tar.bz2     -o ../DATA/spam.tar.bz2
+
+#Make Directories
+#cd ../DATA
+#mkdir ./DATA/easy_ham/
+#mkdir ./DATA/spam/
+
+#Untar Files
+#tar xfj ../DATA/easy_ham.tar.bz2
+#tar xfj ../DATA/spam.tar.bz2
+```
+
+```{r read in data}
+# Bentley Source path
+setwd("/Users/EKandTower/Dropbox/cuny_msds/rwd")
+easy_ham_2 <- VCorpus(DirSource("easy_ham_2"))
+spam_2 <- VCorpus(DirSource("spam_2"))
+
+# Niculescu Source Path
+#setwd("~/Documents/R/CUNYMS/DATA607/PROJECTS/")
+#easy_ham_2 <- VCorpus(DirSource("../DATA/easy_ham"))
+#spam_2 <- VCorpus(DirSource("../DATA/spam"))
+
+
+```
+
+
+### 2. Tag the data
+
+We add metadata to the two data sets so that we can later identify which emails are spam and which are ham.
+
+```{r tag data}
+
+meta(spam_2, tag = "type") <- "spam"
+meta(easy_ham_2, tag = "type") <- "ham"
+
+spham <- c(spam_2, easy_ham_2, recursive = TRUE)
+
+```
+
+### 3. Preliminary visualization
+
+Before we perform transformations on the data we wanted to see what the spam and ham looked like in their "natural"" states.
+
+```{r preliminary-viz, warning = FALSE}
+
+dataframe <- data.frame(text=unlist(sapply(spam_2, `[`)), stringsAsFactors=F)
+
+spamcorpus <- Corpus(VectorSource(spam_2))
+spamcorpus <- tm_map(spamcorpus, removePunctuation)
+
+dtm <- TermDocumentMatrix(spamcorpus)
+m <- as.matrix(dtm)
+v <- sort(rowSums(m),decreasing=TRUE)
+e <- data.frame(word = names(v),freq=v)
+head(e, 100)
+
+dataframe <- data.frame(text=unlist(sapply(easy_ham_2, `[`)), stringsAsFactors=F)
+
+mycorpus <- Corpus(VectorSource(easy_ham_2))
+mycorpus <- tm_map(mycorpus, removePunctuation)
+
+dtm <- TermDocumentMatrix(mycorpus)
+m <- as.matrix(dtm)
+v <- sort(rowSums(m),decreasing=TRUE)
+d <- data.frame(word = names(v),freq=v)
+```
+```{r wordclouds-freq}
+#plot in a wordcloud
+set.seed(1234)
+wordcloud(words = d$word, freq = d$freq, min.freq = 1,
+          max.words=100, random.order=FALSE, rot.per=0.35, 
+          colors=brewer.pal(8, "Dark2"))
+wordcloud(words = e$word, freq = e$freq, min.freq = 1,
+          max.words=100, random.order=FALSE, rot.per=0.35, 
+          colors=brewer.pal(8, "Accent"))
+```
+
+
+### 4. Data cleaning
+
+In order to normalize data we are going to do a number of transformations:
+
+- All lowercase: this will prevent the model from considering "This" and "this" as two different words.
+
+- Remove stopwords: this will prevent very common words (e.g., "i", "we", "my", "me") from being part of the model.
+
+- Consolodate stemming: will allow the model to consider words that essentially mean the same thing (e.g., "sparse", "sparsity" and "sparseness") as the same.
+
+- Remove punctuation: will prevent the model from considering words with punctuation attached as different words (e.g., "this, and that" versus "this and that").
+
+- Remove special characters: similar to the above, but with characters such as "+" or "~". We had originally removed dollar signs but that seemed like something that might be a good indicator.
+
+- Strip whitespace: eliminates spaces, tabs, or other "empty" space from being included in the analysis.
+
+- We originally also excluded strings with over 30 characters but that resulted in too few documents for the analysis.
+
+
+
+```{r data cleaning}
+
+# initially this step was done with piping but on some machines there were memory issues so we broke them out individually.
+
+# transform all to lowercase
+#spham <- tm_map(spham, content_transformer(tolower))
+  
+# consolidate stems
+spham <- tm_map(spham, stemDocument)                              
+  
+# remove punctuation
+spham <- tm_map(spham, removePunctuation)                            
+  
+# remove other punctuation
+spham <- tm_map(spham, content_transformer(str_replace_all), pattern = "[[:punct:]]", replacement = "")    
+  
+# remove special characters
+spham <- tm_map(spham, content_transformer(str_replace_all), pattern = "\\+*\\~*\\|*\\?*\\`*\\?*\\?*", 
+         replacement = "")
+ 
+# remove whitespace
+spham <- tm_map(spham, stripWhitespace)                                  
+
+# strip stopwords
+spham <- tm_map(spham, removeWords, stopwords("english"))
+
+```
+
+
+
+### 5. Randomize
+
+In order to allow for a more dynamic analysis we have randomized the data.
+
+```{r randomizing spham}
+set.seed(23)
+spham <- sample(spham)
+
+```
+
+
+### 6. Create Document Term Matrix
+
+We now convert the data into a document term matrix, the format needed to do further analysis.
+
+```{r document term matrix}
+
+dtm <- DocumentTermMatrix(spham)
+
+```
+
+
+### 7. Reduce sparsity
+
+Sparsity is the extent to which documents appear in documents. 
+
+First looking at what initial sparcity is so that we can compare.
+
+```{r check sparsity}
+
+dtm
+
+```
+
+Reducing sparcity to include only terms that appear in at least 10 documents.
+
+```{r reduce sparsity}
+
+dtm <- removeSparseTerms(dtm,1-(10/length(spham)))
+
+dtm
+```
+
+Reducing sparcity in this method left us with 5,522 terms which, while only 4% of the terms pre-reduction, should still be enough to create a model.
+
+### 8. Create containers
+
+First collect the meta labels assigned in step 2.
+
+```{r collect labels}
+
+meta_type <- unlist(meta(spham, "type")[,1])
+
+```
+
+Now creating a "container" that separates test and train data separately.
+
+We will use 2/3 of the available data to train the models and then test the model on the remaining 1/3.
+
+
+```{r create container}
+
+# calculating lengths as variables for the container formula. Setting this up as formulas will make changing the numbers later if we choose to try different test / train proportions.
+
+n <- length(meta_type)
+n_train <- round(n*.67,0)
+n_test <- n-n_train
+
+container <- create_container(dtm,
+                              labels = meta_type,
+                              trainSize = 1:n_train,
+                              testSize = (n_train+1):n,
+                              virgin = FALSE)
+
+```
+
+
+### 9. Train and test SVM model
+
+Will first use the SVM model as a test to make sure that we have the coding correct and will then apply what we use here on other models.
+
+We're also going to add a timing function so that we can consider computational efficiency for the other models.
+
+```{r train SVM}
+
+tic('svm training time')
+
+svm_model <- train_model(container, "SVM")
+
+svm_classy <- classify_model(container, svm_model)
+
+toc(quiet = TRUE)
+
+```
+
+Create results DF
+
+```{r svm results df}
+
+tic("svm df time")
+svm_df <- data.frame(label = meta_type[(n_train+1):n],svm = svm_classy[,1], stringsAsFactors = FALSE)
+
+svm_df$svm <- as.character(svm_df$svm)
+
+toc(quiet = TRUE)
+
+```
+
+
+Check SVM performance
+
+```{r check svm performance}
+
+tic("svm prop table")
+
+svmperf <- prop.table(table(svm_df[,1] == svm_df[,2]))
+
+toc(log = TRUE, quiet = TRUE)
+svmperf
+```
+
+
+Starting a log of the results
+
+```{r start results log, warning = FALSE}
+
+perflog <- data.frame(svmperf) %>% 
+  rownames_to_column %>% 
+  gather(var, value, -rowname) %>% 
+  spread(rowname, value) %>% 
+  slice(1) 
+  
+perflog[1] <- "svm"
+names(perflog) <- c("Model", "% False", "% True")
+
+perflog
+
+newXa <- sapply(perflog$`% False`, as.numeric)
+y <- sapply(perflog, as.numeric)
+hist(y)
+
+```
+
+The SVM model identified spam 99.1% of the time--quite a good score. A confusion matrix would tell us more, though, particularly how often our model resulted in false positives or negatives.
+
+
+Create confusion matrix
+
+```{r confusion matrix}
+
+tic("svm confusion matrix")
+
+svm_condf <- svm_df 
+
+bi <- c("ham" = 0, "spam" = 1)
+
+svm_condf$label <- bi[svm_condf$label]
+svm_condf$svm <- bi[svm_condf$svm]
+
+confusion.matrix(svm_condf$label, svm_condf$svm)
+
+tic.clearlog()
+
+
+```
+
+
+There were 7 Type I errors (0.8%) and 1 Type II error (0.1%).
+
+In terms of timing the whole process took 7.054 seconds.
+
+
+We're going to start creating vectors to capture the processing times so we can compare later.
+
+### 10. Train and test other models
+
+Now that we see how well SVM did at the job we can run other models and compare their performances.
+
+```{r train tree, tidy = FALSE, warning = FALSE}
+
+# start timer
+tic('tree')
+
+# train and execute model
+
+tree_model <- train_model(container, "TREE")
+tree_classy <- classify_model(container, tree_model)
+tree_df <- data.frame(label = meta_type[(n_train+1):n],tree = tree_classy[,1], stringsAsFactors = FALSE)
+tree_df$tree <- as.character(tree_df$tree)
+treeperf <- prop.table(table(tree_df[,1] == tree_df[,2]))
+
+# add to performance log
+
+treeperf_df <- data.frame(treeperf) %>% 
+  rownames_to_column %>% 
+  gather(var, value, -rowname) %>% 
+  spread(rowname, value) %>% 
+  slice(1) 
+  
+treeperf_df[1] <- "tree"
+names(treeperf_df) <- c("Model", "% False", "% True")
+
+perflog <- rbind(perflog, treeperf_df)
+
+# create confusion matrix
+
+tree_condf <- tree_df 
+bi <- c("ham" = 0, "spam" = 1)
+tree_condf$label <- bi[tree_condf$label]
+tree_condf$tree <- bi[tree_condf$tree]
+
+confusion.matrix(tree_condf$label, tree_condf$tree)
+
+# stop timer
+toc(log = TRUE, quiet = TRUE)
+
+# add time to log
+tl <- tic.log(format = TRUE)
+
+tla <- str_extract(tl, "\\b(.*)(!?\\:)")
+tlb <- str_extract(tl, "\\d\\.\\d{1,3}")
+treetime <- c(tla, tlb)
+
+```
+
+Not nearly as good. Only 94% correct, 19 type I errors (2.2%) and 36 type II (4.1%)
+
+
+```{r train maxy, warning = FALSE}
+
+# start timer
+tic('maxy')
+
+# train and execute model
+maxy_model <- train_model(container, "MAXENT")
+maxy_classy <- classify_model(container, maxy_model)
+maxy_df <- data.frame(label = meta_type[(n_train+1):n],maxy = maxy_classy[,1], stringsAsFactors = FALSE)
+maxy_df$max <- as.character(maxy_df$max)
+maxyperf <- prop.table(table(maxy_df[,1] == maxy_df[,2]))
+
+# add to performance log
+maxyperf_df <- data.frame(maxyperf) %>% 
+  rownames_to_column %>% 
+  gather(var, value, -rowname) %>% 
+  spread(rowname, value) %>% 
+  slice(1) 
+  
+maxyperf_df[1] <- "maxy"
+names(maxyperf_df) <- c("Model", "% False", "% True")
+
+perflog <- rbind(perflog, maxyperf_df)
+
+# create confusion matrix
+maxy_condf <- maxy_df 
+bi <- c("ham" = 0, "spam" = 1)
+maxy_condf$label <- bi[maxy_condf$label]
+maxy_condf$max <- bi[maxy_condf$maxy]
+
+
+confusion.matrix(maxy_condf$label, maxy_condf$maxy)
+
+#stop timer
+
+toc(log = TRUE, quiet = TRUE)
+
+tl <- tic.log(format = TRUE)
+
+tla <- str_extract(tl, "\\b(.*)(!?\\:)")
+tlb <- str_extract(tl, "\\d\\.\\d{1,3}")
+maxytime <- c(tla, tlb)
+maxyperf
+```
+
+Maximum Entropy has taken the lead with 99.7% correct predictions, 0.1% Type I errors, and 0.2% Type II errors.
+
+
+```{r train boost, warning = FALSE}
+
+# start timer
+tic('boost')
+
+# train and execute model
+boost_model <- train_model(container, "BOOSTING")
+boost_classy <- classify_model(container, boost_model)
+boost_df <- data.frame(label = meta_type[(n_train+1):n],boost = boost_classy[,1], stringsAsFactors = FALSE)
+boost_df$boost <- as.character(boost_df$boost)
+boostperf <- prop.table(table(boost_df[,1] == boost_df[,2]))
+
+# add to performance log
+boostperf_df <- data.frame(boostperf) %>% 
+  rownames_to_column %>% 
+  gather(var, value, -rowname) %>% 
+  spread(rowname, value) %>% 
+  slice(1) 
+  
+boostperf_df[1] <- "boost"
+names(boostperf_df) <- c("Model", "% False", "% True")
+
+perflog <- rbind(perflog, boostperf_df)
+
+# create confusion matrix
+boost_condf <- boost_df 
+bi <- c("ham" = 0, "spam" = 1)
+boost_condf$label <- bi[boost_condf$label]
+boost_condf$boost <- bi[boost_condf$boost]
+
+confusion.matrix(boost_condf$label, boost_condf$boost)
+
+toc(log = TRUE, quiet = TRUE)
+
+tl <- tic.log(format = TRUE)
+
+tla <- str_extract(tl, "\\b(.*)(!?\\:)")
+tlb <- str_extract(tl, "\\d\\.\\d{1,3}")
+
+boosttime <- c(tla, tlb)
+
+```
+
+Boosting had the same exact results as the Support Vector Machine, which seems very weird but don't see where the code is off so I guess it just is what it is.
+
+Let's convert the log to numeric and put it into percent form
+
+```{r log to numeric}
+
+perflog$`% False`<- round(as.numeric(perflog$`% False`) * 100, 1)
+perflog$`% True`<- round(as.numeric(perflog$`% True`) * 100, 1)
+
+perflog
+
+```
+
+### 11. Compare timing
+
+Merge the logs to compare efficiency rates.
+
+```{r merge time logs}
+
+timelog <- data.frame("model" = c("svm", boosttime[1:3]), "time" = c(7.054, boosttime[4:6]), stringsAsFactors = FALSE)
+
+timelog$time <- round(as.numeric(timelog$time),2)
+
+timelog
+```
+
+
+### 12. Create final table of results
+
+Now we'll centralize all of the data into one table.
+
+```{r final table}
+
+spham_perf <- bind_cols(perflog, timelog[2])
+
+knitr::kable(head(spham_perf), format = "html") %>% 
+  kable_styling(bootstrap_options = c("striped", "condensed"))
+
+```
+
+
+## Conclusion
+
+Max Entropy is clearly the most accurate model to use, but that doesn't necessarily mean that is the ideal choice. 
+
+Boost is slightly less accurate, but it runs in nearly half the time. When deploying this model at scale this will be a massive saving in resources and given that spam filtering is not a life-or-death situation so the moderate loss in accuracy shouldn't be too much of an issue.
+
+## Next steps
+
+In addition to testing the models on other samples, perhaps just using an k-fold on this data set, it would be good to see whether any of the text transformations would result in greater or lesser accuracy. 
+
+For example, we chose to keep numerical data in while others may have chosen to remove it. We would look not only at what the results would be with numbers excluded but also what the results are of just using numbers.
+
+Additionally it would be good to generate features from the data in order to develop more rigorous logistic modeling.
