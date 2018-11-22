@@ -1,0 +1,232 @@
+---
+title: "606 Homework 7"
+author: "AJ Bentley"
+date: "November 13, 2018"
+output:
+  html_document:
+    highlight: pygments
+    theme: cerulean
+  pdf_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(plotly)
+```
+
+
+#### 7.24 Nutrition at Starbucks, Part I. 
+
+__The scatterplot below shows the relationship between the number of calories and amount of carbohydrates (in grams) Starbucks food menu items contain. 21 Since Starbucks only lists the number of calories on the display items, we are interested in predicting the amount of carbs a menu item has based on its calorie content.__ 
+
+a) Describe the relationship between number of calories and amount of carbohydrates (in grams)
+that Starbucks food menu items contain.
+
+    Loose, at best. I would guess R to be around 0.5.
+
+b) In this scenario, what are the explanatory and response variables?
+
+    Explanatory variable is calories.\
+    Response variable is carbs.
+
+
+c) Why might we want to fit a regression line to these data?
+
+    To understand how many carbs might be in a product based on the number of calories.
+
+d) Do these data meet the conditions required for fitting a least squares line?
+
+    No--there's no apparent consistency in the constants in the residual plot.
+
+<br>
+
+#### 7.26 Body measurements, Part III. 
+
+__Exercise 7.15 introduces data on shoulder girth and height of a group of individuals. The mean shoulder girth is 107.20 cm with a standard deviation of 10.37 cm. The mean height is 171.14 cm with a standard deviation of 9.41 cm. The correlation between height and shoulder girth is 0.67.__
+
+a) Write the equation of the regression line for predicting height.
+
+    y = height (cm)\
+    x = girth (cm)
+
+      Equation for slope using SD\
+      *b~1~ = $\frac{S~y~}{S~x~} \cdot$ R*
+      
+      b = $\frac{9.41}{10.37} $\cdot$ 0.67
+    
+      b = 0.608
+
+
+    Slope-point equation for regression line\
+    *y - y~0~ = slope $\cdot$ (x - x~0~)*
+    
+    171.14 - y = 0.608 $\cdot$ (107.2 - x)
+    
+    171.14 - y = 65.18 - 0.608x
+    
+
+    Slope-interept equation for regression line\
+    - y = -105.96 - 0.608x\
+      y = 0.608x + 105.96
+
+
+b) Interpret the slope and the intercept in this context.
+
+    The line has a slope of 0.608 and will cross the y axis when y = -16.16
+
+```{r chart slope intercept 7.26, echo=FALSE}
+
+x <- c(seq(0, 200, 25))
+y <- 0.608*x + 105.96
+
+df <- data.frame(x,y)
+
+colnames(df) <- c("Girth", "Height")
+
+
+p <- plot_ly(df, x = ~Girth, y = ~Height, type = 'scatter', mode = 'lines+markers') %>%
+  add_trace(y = ~y, mode = 'lines+markers') %>% 
+  layout(showlegend = FALSE)
+
+p
+```
+
+
+c) Calculate R2 of the regression line for predicting height from shoulder girth, and interpret it in the context of the application.
+
+    Correlation (R) is 0.67 so R-Squared is .449, meaning that about 45% of a subject's height is explained by girth.
+
+
+d) A randomly selected student from your class has a shoulder girth of 100 cm. Predict the height of this student using the model.
+
+    y = 0.608x + 105.96
+    y = 0.608 $\cdot$ 100 + 105.96
+    
+    Predicted height based on this model is 167 cm
+    
+
+
+e) The student from part (d) is 160 cm tall. Calculate the residual, and explain what this residual means.
+
+    The residual for this observation is 7, meaning that the model overestimated the observed height by 7 cm.
+
+f) A one year old has a shoulder girth of 56 cm. Would it be appropriate to use this linear model to predict the height of this child?
+
+    The age of participants is not specified so we can't necessarily rule out the propriety of using the model on this basis, however it is reasonable to assume that given that the shortest person in the sample is over 4 1/2 feet tall that there were no 1 year olds included. 
+    
+    That being the case, we cannot use the model to predict the height of the child as we cannot know the impact of age on either height or girth with the data given, it must be extrapolated.  
+
+<br>
+
+
+#### 7.30 Cats, Part I. 
+
+__The following regression output is for predicting the heart weight (in g) of cats from their body weight (in kg). The coefficients are estimated using a dataset of 144 domestic cats.__
+
+a) Write out the linear model.
+
+    $\hat{heart weight}$ = $\beta$~0~ + $\beta$~1~ $\cdot$ body Weight
+
+    $\hat{heart weight}$ = - 0.357 + 4.034 $\cdot$ body weight
+    
+    y = 4.034x - 0.357
+
+b) Interpret the intercept.
+
+    The line has a slope of 4.034 and would cross the y axis when y = - 0.357 if that were a possible value.
+
+```{r chart slope intercept 7.30, echo=FALSE}
+
+x <- c(seq(2, 5, 0.5))
+y <- 4.034*x - 0.357
+
+df <- data.frame(x,y)
+
+colnames(df) <- c("Body Weight (kg)", "Heart Weight (g)")
+
+
+p <- plot_ly(df, x = ~`Body Weight (kg)`, y = ~`Heart Weight (g)`, type = 'scatter', mode = 'lines+markers') %>%
+  add_trace(y = ~y, mode = 'lines+markers') %>% 
+  layout(showlegend = FALSE)
+
+p
+```
+
+    For every 1kg increase in body weight there is an increase of about a 4.034 in heart weight.
+
+d) Interpret R2.
+
+    R^2^ is 64.66%, which means that using the model improves predictability of murder rate by 64.66%
+
+e) Calculate the correlation coefficient.
+
+```{r 7.30 e}
+
+a <- sqrt(64.66)
+
+paste("The correlation coefficient is the square root of R^2. In this example the correlation coeffecient is", a)
+```
+
+<br>
+
+##### 7.40 Rate my professor. 
+
+__Many college courses conclude by giving students the opportunity to evaluate the course and the instructor anonymously. However, the use of these student evaluations as an indicator of course quality and teaching effectiveness is often criticized because these measures may reflect the influence of non-teaching related characteristics, such as the physical appearance of the instructor. Researchers at University of Texas, Austin collected data on teaching evaluation score (higher score means better) and standardized beauty score (a score of 0 means average, negative score means below average, and a positive score means above average) for a sample of 463 professors. The scatterplot below shows the relationship between these variables, and also provided is a regression output for predicting teaching evaluation score from beauty score.__
+
+a) Given that the average standardized beauty score is -0.0883 and average teaching evaluation score is 3.9983, calculate the slope. Alternatively, the slope may be computed using just the information provided in the model summary table.
+
+- value of x at y intercept (4.010) is 0 so the first point is (0, 4.010).\
+- second point is at means of both data sets (-0.0883, 3.9983).
+
+    m = $\frac{y~1~ - y~0~}{x~1~ - x~0~}$\
+    m = $\frac{3.9983 - 4.010}{-0.0883 - 0}\
+    m = $\frac{-0.0117}{-0.0883}
+    
+    m = 0.133
+
+
+```{r 7.40, echo=FALSE}
+
+x <- c(seq(-2, 2, 0.5))
+y <- 0.133*x + 4.010
+
+yrange <- c(seq(2,5,0.5))
+
+df <- data.frame(x,y)
+
+colnames(df) <- c("Beauty", "Teaching")
+
+
+p <- plot_ly(df, x = ~Beauty, y = ~Teaching, type = 'scatter', mode = 'lines+markers') %>%
+  add_trace(y = ~y, mode = 'lines+markers') %>% 
+  layout(showlegend = FALSE) 
+
+p
+```
+
+
+
+b) Do these data provide convincing evidence that the slope of the relationship between teaching evaluation and beauty is positive? Explain your reasoning.
+
+    T = $\frac{point estimate - null value}{SE}$
+
+    T = $\frac{0.133 - 0}{0.0322}
+    
+    T = 4.13
+    
+    p > T = 1
+    
+    While my eyes say otherwise, the math suggests that there is convincing evidence that the slope is positive.
+
+
+
+c) List the conditions required for linear regression and check if each one is satisfied for this model based on the following diagnostic plots.
+
+    1. Linearity: Yes. Data follow a fairly linear trend.
+    
+    2. Nearly normal residuals: Yes. Residuals are fairly normally distributed.
+    
+    3. Constant variability: No. Variability is all over the place.
+
+
+
