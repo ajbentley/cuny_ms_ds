@@ -1,0 +1,57 @@
+---
+title: "CUNY MSDS 607 Week 12 Graph Databases"
+author: "AJ Bentley"
+date: "11/24/2018"
+output: html_document
+---
+  
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+library(DBI)
+library(dplyr)
+library(mongolite)
+library(RMySQL)
+
+```
+
+
+Load up flights database from MySQL
+
+```{r}
+
+fdb <- dbConnect(RMySQL::MySQL(), user='root', password = rstudioapi::askForPassword("Database password"), dbname='flights', host='localhost')
+
+dbListTables(fdb)
+
+```
+
+Bring in data about planes from MySQL table
+
+```{r}
+
+pln <- dbSendQuery(fdb, "SELECT * FROM planes")
+planes_df <- fetch(pln)
+
+dbClearResult(dbListResults(fdb)[[1]])
+```
+
+```{r}
+
+airl <- dbSendQuery(fdb, "SELECT * FROM airlines")
+airlines_df <- fetch(airl)
+
+```
+
+
+Feed plane data into a MongoDB database
+
+```{r}
+
+mplane = mongo(collection = "planes", db = "flights")
+mplane$insert(planes_df)
+
+mline = mongo(collection = "airlines", db = "flights")
+mline$insert(airlines_df)
+
+```
